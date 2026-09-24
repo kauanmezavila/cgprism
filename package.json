@@ -1,0 +1,17 @@
+{
+  "name": "cgprism",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "cgprism": "./src/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./src/cli/index.js"
+  },
+  "dependencies": {
+    "@huggingface/hub": "^2.17.2",
+    "better-sqlite3": "^13.0.3",
+    "pg": "^8.23.0"
+  }
+}
