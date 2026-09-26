@@ -7,7 +7,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node ./src/cli/index.js"
+    "start": "node ./src/cli/index.js",
+    "type:check": "prettier --check .",
+    "type:fix": "prettier --write .",
+    "validate": "prettier --check . || prettier --write ."
   },
   "dependencies": {
     "@huggingface/hub": "^2.17.2",
