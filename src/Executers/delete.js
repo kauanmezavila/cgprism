@@ -1,44 +1,77 @@
 import { rm } from "node:fs/promises";
 import { resolve } from "../core/Packages/resolve.js";
 import { join } from "node:path";
+import {
+  deleteModelsName,
+  deleteModelsOwner,
+  deleteModelsProvider,
+} from "../core/ModelsManager/delete.js";
 
 export async function uninstallModel(pathDetails) {
-  const mainPath = join(
-    "src",
-    "data",
-    "Models",
-    pathDetails.provider,
-    pathDetails.target,
-  );
+  if (!pathDetails?.provider || !pathDetails?.owner || !pathDetails?.model) {
+    throw new Error("Brutal > Invalid model name details");
+  } else {
+    const mainPath = join(
+      "src",
+      "data",
+      "Models",
+      pathDetails.provider,
+      pathDetails.owner,
+      pathDetails.model,
+    );
 
-  await rm(mainPath, {
-    recursive: true,
-    force: true,
-  });
+    try {
+      await rm(mainPath, {
+        recursive: true,
+        force: false,
+      });
+      deleteModelsName(pathDetails.model, pathDetails.owner);
+    } catch {
+      console.error("Brutal >", error.message);
+    }
+  }
 }
 
 export async function uninstallOwner(pathDetails) {
-  const mainPath = join(
-    "src",
-    "data",
-    "Models",
-    pathDetails.provider,
-    pathDetails.owner,
-  );
+  if (!pathDetails?.provider || !pathDetails?.owner) {
+    throw new Error("Brutal > Invalid owner details");
+  } else {
+    const mainPath = join(
+      "src",
+      "data",
+      "Models",
+      pathDetails.provider,
+      pathDetails.owner,
+    );
 
-  await rm(mainPath, {
-    recursive: true,
-    force: true,
-  });
+    try {
+      await rm(mainPath, {
+        recursive: true,
+        force: false,
+      });
+      deleteModelsOwner(pathDetails.owner);
+    } catch {
+      console.error("Brutal >", error.message);
+    }
+  }
 }
 
 export async function uninstallProvider(pathDetails) {
-  const mainPath = join("src", "data", "Models", pathDetails.provider);
+  if (!pathDetails?.provider) {
+    throw new Error("Brutal > Invalid provider details");
+  } else {
+    const mainPath = join("src", "data", "Models", pathDetails.provider);
 
-  await rm(mainPath, {
-    recursive: true,
-    force: true,
-  });
+    try {
+      await rm(mainPath, {
+        recursive: true,
+        force: false,
+      });
+      deleteModelsProvider(pathDetails.provider);
+    } catch {
+      console.error("Brutal >", error.message);
+    }
+  }
 }
 
-uninstallModel(resolve("uninstall hg@prism-ml/Ternary-Bonsai-2-27B-gguf"));
+uninstallProvider(resolve("uninstall hg"));

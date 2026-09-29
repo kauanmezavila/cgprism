@@ -1,7 +1,18 @@
 export function resolve(command) {
+  let provider;
+  let target;
+  let owner;
+  let model;
+
   const [cmd, arg] = command.split(" ");
-  const [provider, target] = arg.split("@");
-  const [owner, model] = target.split("/");
+
+  if (arg) {
+    [provider, target] = arg.split("@");
+  }
+
+  if (target) {
+    [owner, model] = target.split("/");
+  }
 
   let providerUrl = undefined;
 
