@@ -7,44 +7,73 @@ export function dbInit() {
     CREATE TABLE IF NOT EXISTS models (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
+      family TEXT,
+      architecture TEXT,
+      version TEXT,
       provider TEXT,
       owner TEXT,
-      version TEXT,
       path TEXT NOT NULL,
       format TEXT NOT NULL,
       size_bytes INTEGER,
       parameters TEXT,
+      quantization TEXT,
       runtime TEXT,
+      context_length INTEGER,
+      capabilities TEXT,
       status TEXT NOT NULL DEFAULT 'installed',
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     )
   `);
+
+  const columns = new Set(
+    db.pragma("table_info(models)").map(({ name }) => name),
+  );
+  for (const [name, type] of [
+    ["family", "TEXT"],
+    ["architecture", "TEXT"],
+    ["quantization", "TEXT"],
+    ["context_length", "INTEGER"],
+    ["capabilities", "TEXT"],
+  ]) {
+    if (!columns.has(name))
+      db.exec(`ALTER TABLE models ADD COLUMN ${name} ${type}`);
+  }
 }
 
 export function addModel(model) {
   const stmt = db.prepare(`
     INSERT INTO models (
       name,
+      family,
+      architecture,
+      version,
       provider,
       owner,
-      version,
       path,
       format,
       size_bytes,
       parameters,
-      runtime
+      quantization,
+      runtime,
+      context_length,
+      capabilities
     )
     VALUES (
       @name,
+      @family,
+      @architecture,
+      @version,
       @provider,
       @owner,
-      @version,
       @path,
       @format,
       @size_bytes,
       @parameters,
-      @runtime
+      @quantization,
+      @runtime,
+      @context_length,
+      @capabilities
     )
   `);
 

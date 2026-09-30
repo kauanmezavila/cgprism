@@ -3,6 +3,7 @@ export function resolve(command) {
   let target;
   let owner;
   let model;
+  let file;
 
   const [cmd, arg] = command.split(" ");
 
@@ -11,7 +12,7 @@ export function resolve(command) {
   }
 
   if (target) {
-    [owner, model] = target.split("/");
+    [owner, model, file] = target.split("/");
   }
 
   let providerUrl = undefined;
@@ -38,6 +39,7 @@ export function resolve(command) {
       target,
       owner,
       model,
+      file,
     };
   } else {
     result = {
@@ -47,6 +49,7 @@ export function resolve(command) {
       target,
       owner,
       model,
+      file,
     };
   }
 

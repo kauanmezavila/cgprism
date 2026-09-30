@@ -2,75 +2,106 @@ import Database from "better-sqlite3";
 
 const db = new Database("src/data/registry.db");
 
-export function deleteModelsProvider(provider) {
-  const stmt = db.prepare(`
-    DELETE FROM models
-    WHERE provider = @provider
-  `);
-
-  return stmt.run({ provider });
+async function deleteModelsBy(column, value) {
+  return db
+    .prepare(`DELETE FROM models WHERE ${column} = @value`)
+    .run({ value });
 }
 
-export function deleteModelsName(name, owner) {
-  const stmt = db.prepare(`
-    DELETE FROM models
-    WHERE name = @name
-    AND owner = @owner
-  `);
+export function deleteModelsProvider(provider) {
+  return deleteModelsBy("provider", provider);
+}
 
-  return stmt.run({ name, owner });
+export async function deleteModelsName(name, owner) {
+  return db
+    .prepare(
+      `
+      DELETE FROM models
+      WHERE name LIKE @name
+        AND owner = @owner
+    `,
+    )
+    .run({
+      name: `${name}%`,
+      owner,
+    });
+}
+
+export async function deleteModelsSpecial(path, owner) {
+  return db
+    .prepare(
+      `
+      DELETE FROM models
+      WHERE path LIKE @path
+        AND owner = @owner
+    `,
+    )
+    .run({
+      path: `${path}%`,
+      owner,
+    });
 }
 
 export function deleteModelsOwner(owner) {
-  const stmt = db.prepare(`
-    DELETE FROM models
-    WHERE owner = @owner
-  `);
-
-  return stmt.run({ owner });
+  return deleteModelsBy("owner", owner);
 }
 
 export function deleteModelsFormat(format) {
-  const stmt = db.prepare(`
-    DELETE FROM models
-    WHERE format = @format
-  `);
-
-  return stmt.run({ format });
+  return deleteModelsBy("format", format);
 }
 
 export function deleteModelsRuntime(runtime) {
-  const stmt = db.prepare(`
-    DELETE FROM models
-    WHERE runtime = @runtime
-  `);
-
-  return stmt.run({ runtime });
+  return deleteModelsBy("runtime", runtime);
 }
 
 export function deleteModelsStatus(status) {
-  const stmt = db.prepare(`
-    DELETE FROM models
-    WHERE status = @status
-  `);
-
-  return stmt.run({ status });
+  return deleteModelsBy("status", status);
 }
 
 export function deleteModelsParams(parameters) {
-  const stmt = db.prepare(`
-    DELETE FROM models
-    WHERE parameters = @parameters
-  `);
-
-  return stmt.run({ parameters });
+  return deleteModelsBy("parameters", parameters);
 }
 
 export function deleteModelsId(id) {
-  const stmt = db.prepare(`
-    DELETE FROM models
-    WHERE id = @id
-  `);
+  return deleteModelsBy("id", id);
+}
 
-  return stmt.run({ id });
+export function deleteModelsFamily(family) {
+  return deleteModelsBy("family", family);
+}
+
+export function deleteModelsArchitecture(architecture) {
+  return deleteModelsBy("architecture", architecture);
+}
+
+export function deleteModelsVersion(version) {
+  return deleteModelsBy("version", version);
+}
+
+export function deleteModelsPath(path) {
+  return deleteModelsBy("path", path);
+}
+
+export function deleteModelsSizeBytes(size_bytes) {
+  return deleteModelsBy("size_bytes", size_bytes);
+}
+
+export function deleteModelsQuantization(quantization) {
+  return deleteModelsBy("quantization", quantization);
+}
+
+export function deleteModelsContextLength(context_length) {
+  return deleteModelsBy("context_length", context_length);
+}
+
+export function deleteModelsCapabilities(capabilities) {
+  return deleteModelsBy("capabilities", capabilities);
+}
+
+export function deleteModelsCreatedAt(created_at) {
+  return deleteModelsBy("created_at", created_at);
+}
+
+export function deleteModelsUpdatedAt(updated_at) {
+  return deleteModelsBy("updated_at", updated_at);
 }

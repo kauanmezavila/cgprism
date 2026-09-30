@@ -1,18 +1,6 @@
-// const t = require("./terminal-fx");
-
-// console.log(t.cyan("Olá!"));
-// console.log(t.bold(t.yellow("Aviso")));
-// console.log(t.gradient("TERMINAL FX"));
-// console.log(t.rainbow("efeito colorido"));
-
-// console.log(t.box("Tudo funcionando!", { title: "STATUS" }));
-
-// (async () => {
-//   await t.typewrite("Texto aparecendo aos poucos...", 30);
-//   await t.spinner("Processando", 2000);
-// })();
-
 const ESC = "\x1b[";
+
+const stripAnsi = (value) => String(value).replace(/\x1b\[[0-9;]*m/g, "");
 
 const codes = {
   reset: "0",
@@ -95,19 +83,24 @@ const api = {
         .join("") + "\x1b[0m"
     );
   },
-
   box(text, options = {}) {
     const title = options.title ? ` ${options.title} ` : "";
     const lines = String(text).split("\n");
+
     const width = Math.max(
-      ...lines.map((x) => [...x].length),
+      ...lines.map((x) => [...stripAnsi(x)].length),
       [...title].length,
     );
+
     const top = `┌${"─".repeat(width + 2)}┐`;
     const bottom = `└${"─".repeat(width + 2)}┘`;
-    const body = lines.map(
-      (x) => `│ ${x}${" ".repeat(width - [...x].length)} │`,
-    );
+
+    const body = lines.map((x) => {
+      const visibleLength = [...stripAnsi(x)].length;
+
+      return `│ ${x}${" ".repeat(width - visibleLength)} │`;
+    });
+
     return [top, ...body, bottom].join("\n");
   },
 

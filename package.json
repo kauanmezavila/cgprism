@@ -3,18 +3,18 @@
   "version": "0.1.0",
   "type": "module",
   "bin": {
-    "cgprism": "./src/cli/index.js"
+    "cgprism": "./src/cli/main.js"
   },
   "scripts": {
-    "build": "tsc",
-    "start": "node ./src/cli/index.js",
-    "type:check": "prettier --check .",
-    "type:fix": "prettier --write .",
+    "start": "node ./src/cli/main.js",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
     "validate": "prettier --check . || prettier --write ."
   },
   "dependencies": {
     "@huggingface/hub": "^2.17.2",
     "better-sqlite3": "^13.0.3",
+    "cgprism": "link:",
     "pg": "^8.23.0"
   }
 }

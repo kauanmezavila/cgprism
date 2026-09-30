@@ -15,7 +15,7 @@ function formatBytes(bytes) {
   return `${value.toFixed(2)} ${units[i]}`;
 }
 
-export async function getSize(dir) {
+export async function getSize(path) {
   let total = 0;
 
   async function walk(current) {
@@ -32,7 +32,12 @@ export async function getSize(dir) {
     }
   }
 
-  await walk(dir);
+  const info = await stat(path);
+  if (info.isDirectory()) {
+    await walk(path);
+  } else {
+    total = info.size;
+  }
 
   const formatted = formatBytes(total);
 
