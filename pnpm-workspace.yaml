@@ -1,4 +1,4 @@
 allowBuilds:
   better-sqlite3: true
 overrides:
-  cgprism: 'link:'
+  cgprism: "link:"
