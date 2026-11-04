@@ -73,7 +73,7 @@ cgprism install [PROVIDER_ID]@[MODEL_OWNER]/[MODEL_REPO_NAME] [FLAGS]
 #### Example
 
 ```bash
-cgprim install ms@MiniMax/MiniMax-M3.1-Flash.git --gls
+cgprism install ms@MiniMax/MiniMax-M3.1-Flash.git --gls
 ```
 
 #### Flags
@@ -97,17 +97,17 @@ cgprism uninstall [PROVIDER_ID]@[MODEL_OWNER]/[MODEL_REPO_NAME] [FLAGS]
 Uninstall the model from provider + an owner
 
 ```bash
-cgprim uninstall ms@MiniMax/MiniMax-M3.1-Flash.git
+cgprism uninstall ms@MiniMax/MiniMax-M3.1-Flash.git
 ```
 
 Uninstall all repos from a owner
 
 ```bash
-cgprim uninstall ms@MiniMax
+cgprism uninstall ms@MiniMax
 ```
 
 Uninstall all repos form a provider
 
 ```bash
-cgprim uninstall ms
+cgprism uninstall ms
 ```
