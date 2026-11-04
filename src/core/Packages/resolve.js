@@ -41,6 +41,8 @@ export function resolve(command) {
 
   if (provider === "hg") {
     providerUrl = "https://huggingface.co/";
+  } else if (provider === "ms") {
+    providerUrl = "https://www.modelscope.ai/";
   }
 
   const result = {

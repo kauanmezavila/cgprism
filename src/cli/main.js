@@ -35,7 +35,7 @@ const version = args.includes("--version");
 const resolvedQuery = resolve(args.join(" "));
 
 if (version) {
-  console.log(t.italic(t.gradient(`CGPrism`) + " 1.0.0"));
+  console.log(t.italic(t.gradient(`CGPrism`) + " 0.0.1"));
 } else if (command === "install") {
   console.log(banner);
   console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);
