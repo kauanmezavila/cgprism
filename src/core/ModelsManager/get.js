@@ -88,3 +88,7 @@ export function getModelsCreatedAt(created_at) {
 export function getModelsUpdatedAt(updated_at) {
   return getModelsBy("updated_at", updated_at);
 }
+
+export function getModelsGLS(gls) {
+  return getModelsBy("gls", gls);
+}

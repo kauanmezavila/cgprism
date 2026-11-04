@@ -20,6 +20,7 @@ export function dbInit() {
       runtime TEXT,
       context_length INTEGER,
       capabilities TEXT,
+      gls BOOL,
       status TEXT NOT NULL DEFAULT 'installed',
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -57,7 +58,8 @@ export function addModel(model) {
       quantization,
       runtime,
       context_length,
-      capabilities
+      capabilities,
+      gls
     )
     VALUES (
       @name,
@@ -73,7 +75,8 @@ export function addModel(model) {
       @quantization,
       @runtime,
       @context_length,
-      @capabilities
+      @capabilities,
+      @gls
     )
   `);
 

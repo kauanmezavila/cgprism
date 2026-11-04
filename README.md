@@ -12,6 +12,7 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 ## What it CAN do now
 
 - Install models repos from Hugging Face
+- Install GLS pointers
 - Uninstall providers/owners/repos/models
 - Registring everything in a SQLite 3 DB
 

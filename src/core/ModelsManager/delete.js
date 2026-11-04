@@ -105,3 +105,7 @@ export function deleteModelsCreatedAt(created_at) {
 export function deleteModelsUpdatedAt(updated_at) {
   return deleteModelsBy("updated_at", updated_at);
 }
+
+export function deleteModelsGLS(gls) {
+  return deleteModelsBy("gls", gls);
+}

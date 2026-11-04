@@ -72,6 +72,16 @@ export function updateModelsParams(id, parameters) {
   return stmt.run({ id, parameters });
 }
 
+export function updateGLS(id, gls) {
+  const stmt = db.prepare(`
+    UPDATE models
+    SET gls = @gls, updated_at = CURRENT_TIMESTAMP
+    WHERE id = @id
+  `);
+
+  return stmt.run({ id, gls });
+}
+
 export function updateModelMetadata(
   id,
   { family, architecture, version, quantization, context_length, capabilities },

@@ -5,7 +5,10 @@ export function resolve(command) {
   let model;
   let file;
 
-  const [cmd, arg] = command.split(" ");
+  const args = command.trim().split(/\s+/);
+  const cmd = args.shift();
+
+  const arg = args.find((a) => !a.startsWith("-"));
 
   if (arg) {
     [provider, target] = arg.split("@");
@@ -15,43 +18,41 @@ export function resolve(command) {
     [owner, model, file] = target.split("/");
   }
 
-  let providerUrl = undefined;
+  const flags = {};
+
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+
+    if (!arg.startsWith("-")) continue;
+
+    const [key, inlineValue] = arg.replace(/^-+/, "").split("=");
+
+    const value =
+      inlineValue !== undefined
+        ? inlineValue
+        : args[i + 1]?.startsWith("-")
+          ? true
+          : (args[++i] ?? true);
+
+    flags[key] = value;
+  }
+
+  let providerUrl;
 
   if (provider === "hg") {
     providerUrl = "https://huggingface.co/";
-  } else {
-    providerUrl = undefined;
   }
 
-  let result = undefined;
-
-  if (cmd === "install") {
-    result = {
-      provider,
-      providerUrl,
-      target,
-      owner,
-      model,
-    };
-  } else if (cmd === "uninstall") {
-    result = {
-      provider,
-      target,
-      owner,
-      model,
-      file,
-    };
-  } else {
-    result = {
-      cmd,
-      provider,
-      providerUrl,
-      target,
-      owner,
-      model,
-      file,
-    };
-  }
+  const result = {
+    cmd,
+    provider,
+    providerUrl,
+    target,
+    owner,
+    model,
+    file,
+    ...flags,
+  };
 
   return result;
 }

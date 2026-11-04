@@ -5,6 +5,7 @@ import { getModelDefaults } from "../core/Packages/modelDefaults.js";
 import { resolveModelName } from "../core/Packages/nameResolver.js";
 import { getSize } from "../core/Packages/size.js";
 import { ask } from "../core/Packages/ask.js";
+import { detectLFS, pullLFS } from "../core/Packages/glfDetecter.js";
 
 import { join, extname, relative } from "node:path";
 import { access, readdir } from "node:fs/promises";
@@ -138,6 +139,24 @@ export default async function install(installDetails) {
         mainPath,
       ]);
       console.log(`\n${t.green("OK")} repository cloned.`);
+    }
+
+    console.log(`${t.cyan("Checking Git LFS...")}`);
+
+    const hasLFS = await detectLFS(mainPath);
+
+    if (installDetails.gls) {
+      if (hasLFS) {
+        console.log(
+          `${t.yellow("Git LFS detected. Downloading model files...")}`,
+        );
+
+        await pullLFS(mainPath);
+
+        console.log(`${t.green("OK")} Git LFS files downloaded.`);
+      } else {
+        console.log(`${t.green("No Git LFS files detected.")}`);
+      }
     }
 
     console.log(`${t.cyan("Scanning repository...")}`);
