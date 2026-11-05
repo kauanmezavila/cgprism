@@ -51,7 +51,7 @@ async function scanModels(directory) {
   return models;
 }
 
-async function promptModel(installDetails, modelPath) {
+async function promptModel(installDetails, modelPath, hasLFS) {
   const size = await getSize(modelPath);
 
   const filename = modelPath.split(/[\\/]/).pop();
@@ -98,6 +98,7 @@ async function promptModel(installDetails, modelPath) {
       "Capabilities",
       defaults.capabilities || defaults.variant?.join(", ") || "",
     ),
+    gls: installDetails.gls || hasLFS ? 0 : 1,
   };
 
   return model;
@@ -178,7 +179,7 @@ export default async function install(installDetails) {
     dbInit();
 
     for (const modelPath of models) {
-      const model = await promptModel(installDetails, modelPath);
+      const model = await promptModel(installDetails, modelPath, hasLFS);
 
       addModel(model);
 

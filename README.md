@@ -15,12 +15,12 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 - Install GLS pointers
 - Uninstall providers/owners/repos/models
 - Registring everything in a SQLite 3 DB
+- TUI docs navigation
 
 ## What it CAN'T do now / What it WILL do in the future.
 
 - Run models
 - Search models
-- TUI docs navigation
 - More providers
 - API integration to model usage
 - Route for multiple models
@@ -111,3 +111,53 @@ Uninstall all repos form a provider
 ```bash
 cgprism uninstall ms
 ```
+
+### See repo documentation
+
+Look the .md's in the repo on your terminal
+
+```bash
+cgprism docs [SEARCH_TERM] [FLAGS]
+```
+
+- `SEARCH_TERM`: A term used to search into the storage references.
+- `FLAGS`: The type of the term
+
+#### Examples
+
+Search by name in .db:
+
+```bash
+cgprism docs nemotrom --model
+```
+
+Search by provider:
+
+```bash
+cgprism docs hg --provider
+```
+
+Search by owner:
+
+```bash
+cgprism docs nvidia --owner
+```
+
+Search by architecture:
+
+```bash
+cgprism docs Qwen --architecture
+```
+
+#### Flags
+
+| Flag             | Function     |
+| ---------------- | ------------ |
+| `--model`        | name in db   |
+| `--provider`     | provider     |
+| `--owner`        | owner        |
+| `--family`       | family       |
+| `--architecture` | architecture |
+| `--format`       | format       |
+| `--runtime`      | runtime      |
+| `--status`       | status       |

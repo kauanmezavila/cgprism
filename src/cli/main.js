@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import t from "../core/Packages/colors.js";
+import { run } from "../core/Packages/run.js";
 import install from "../Executers/install.js";
 import {
   uninstallModelsFile,
@@ -8,7 +9,10 @@ import {
   uninstallOwner,
   uninstallProvider,
 } from "../Executers/delete.js";
+import { showDocs } from "../Executers/docs.js";
 import { resolve } from "../core/Packages/resolve.js";
+
+import { dirname } from "node:path";
 
 const args = process.argv.slice(2);
 
@@ -62,4 +66,12 @@ if (version) {
   } else {
     console.log("Brutal > Missing info on the query");
   }
+} else if (command === "docs") {
+  console.log(banner);
+  console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);
+
+  const selectedPath = await showDocs(args);
+  const finalPath = dirname(selectedPath);
+
+  await run("mdt", [finalPath], { raw: true });
 }

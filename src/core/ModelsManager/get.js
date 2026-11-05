@@ -2,7 +2,7 @@ import Database from "better-sqlite3";
 
 const db = new Database("src/data/registry.db");
 
-function getModelsBy(column, value) {
+export function getModelsBy(column, value) {
   return db
     .prepare(`SELECT * FROM models WHERE ${column} = @value`)
     .all({ value });

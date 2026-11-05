@@ -1,30 +1,34 @@
 import t from "./colors.js";
-
 import { spawn } from "node:child_process";
 
-export function run(program, args = []) {
+export function run(program, args = [], options = {}) {
+  const { raw = false, ...spawnOptions } = options;
+
   return new Promise((resolve, reject) => {
-    console.log(t.dim(`$ ${(program, args.join(" "))}`));
-    const process = spawn(program, args);
+    console.log(t.dim(`$ ${program} ${args.join(" ")}`));
 
-    process.stdout.on("data", (data) => {
-      console.log(t.dim(data.toString()));
+    const child = spawn(program, args, {
+      ...spawnOptions,
+      stdio: raw ? "inherit" : ["inherit", "pipe", "pipe"],
     });
 
-    process.stderr.on("data", (data) => {
-      console.error(t.dim(data.toString()));
-    });
+    if (!raw) {
+      child.stdout.on("data", (data) => {
+        process.stdout.write(t.dim(data.toString()));
+      });
 
-    t.dim(t.red(process.on("error", reject)));
+      child.stderr.on("data", (data) => {
+        process.stderr.write(t.dim(data.toString()));
+      });
+    }
 
-    process.on("close", (code) => {
+    child.on("error", reject);
+
+    child.on("close", (code) => {
       console.log(t.dim(t.magenta(`Finished with code [${code}]`)));
 
-      if (code === 0) {
-        resolve();
-      } else {
-        t.dim(reject(new Error(t.red(`Finished with [${code}]`))));
-      }
+      if (code === 0) resolve();
+      else reject(new Error(`Finished with code [${code}]`));
     });
   });
 }
