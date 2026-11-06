@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+
 import t from "../core/Packages/colors.js";
 import { run } from "../core/Packages/run.js";
+import { runModelWithOllama } from "../Executers/runModels.js";
 import install from "../Executers/install.js";
 import {
   uninstallModelsFile,
@@ -11,8 +15,17 @@ import {
 } from "../Executers/delete.js";
 import { showDocs } from "../Executers/docs.js";
 import { resolve } from "../core/Packages/resolve.js";
+import { createModelFile, createModelWithOllama } from "../Executers/model.js";
 
 import { dirname } from "node:path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const packageRoot = path.resolve(__dirname, "../..");
+
+const modelsPath = path.join(packageRoot, "src", "data", "Models");
+const registryPath = path.join(packageRoot, "src", "data", "registry.db");
 
 const args = process.argv.slice(2);
 
@@ -47,6 +60,27 @@ if (version) {
 
   if (resolvedQuery.model + resolvedQuery.owner + resolvedQuery.provider) {
     install(resolvedQuery);
+  } else if (
+    resolvedQuery.model +
+    resolvedQuery.owner +
+    resolvedQuery.provider +
+    resolvedQuery.full +
+    resolvedQuery.ollama
+  ) {
+    install(resolvedQuery);
+
+    const modelQuery = args
+      .slice(1)
+      .filter((arg) => !arg.startsWith("--"))
+      .join(" ");
+
+    await createModelFile(packageRoot, modelQuery);
+
+    const result = await createModelWithOllama(packageRoot, modelQuery);
+
+    if (result) {
+      console.log(`${t.green("OK")} ${result.id} was deployed to Ollama.`);
+    }
   } else {
     console.log("Brutal > Missing info on the query");
   }
@@ -74,4 +108,36 @@ if (version) {
   const finalPath = dirname(selectedPath);
 
   await run("mdt", [finalPath], { raw: true });
+} else if (command === "model") {
+  console.log(banner);
+  console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);
+  console.log(t.dim(`Resolved:\n${JSON.stringify(resolvedQuery, null, 2)}\n`));
+
+  const modelQuery = args
+    .slice(1)
+    .filter((arg) => !arg.startsWith("--"))
+    .join(" ");
+
+  if (resolvedQuery.new) {
+    await createModelFile(packageRoot, modelQuery);
+  } else if (resolvedQuery.create && resolvedQuery.ollama) {
+    const result = await createModelWithOllama(packageRoot, modelQuery);
+
+    if (result) {
+      console.log(`${t.green("OK")} ${result.id} was deployed to Ollama.`);
+    }
+  }
+} else if (command === "run") {
+  console.log(banner);
+  console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);
+  console.log(t.dim(`Resolved:\n${JSON.stringify(resolvedQuery, null, 2)}\n`));
+
+  const modelQuery = args
+    .slice(1)
+    .filter((arg) => !arg.startsWith("--"))
+    .join(" ");
+
+  if (resolvedQuery.ollama) {
+    await runModelWithOllama(modelQuery);
+  }
 }

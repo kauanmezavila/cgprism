@@ -109,3 +109,7 @@ export function deleteModelsUpdatedAt(updated_at) {
 export function deleteModelsGLS(gls) {
   return deleteModelsBy("gls", gls);
 }
+
+export function deleteModelsOllamaId(ollama_model_id) {
+  return deleteModelsBy("ollama_model_id", ollama_model_id);
+}

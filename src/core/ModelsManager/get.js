@@ -92,3 +92,7 @@ export function getModelsUpdatedAt(updated_at) {
 export function getModelsGLS(gls) {
   return getModelsBy("gls", gls);
 }
+
+export function getModelsOllamaId(ollama_model_id) {
+  return getModelsBy("ollama_model_id", ollama_model_id);
+}

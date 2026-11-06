@@ -1,4 +1,6 @@
 src/data/Models/
+src/data/registry.db
+
 
 # Logs
 logs

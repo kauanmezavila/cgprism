@@ -1,7 +1,7 @@
 <div align="center">
   <h1>CGPrism</h1>
   <p>The local interface for AI management</p>
-  <p><b>v0.0.2: Library Manager</b></p>
+  <p><b>v0.0.5: Llama Specialist</b></p>
 </div>
 
 ## What it is?
@@ -78,9 +78,10 @@ cgprism install ms@MiniMax/MiniMax-M3.1-Flash.git --gls
 
 #### Flags
 
-| Flag  | Function                                    |
-| ----- | ------------------------------------------- |
-| --gls | Detect and install GLS pointers in the repo |
+| Flag                  | Function                                      |
+| --------------------- | --------------------------------------------- |
+| --gls                 | Detect and install GLS pointers in the repo   |
+| --gls --full --ollama | Will install and deploy one model with ollama |
 
 ### Uninstall models
 
@@ -112,6 +113,67 @@ Uninstall all repos form a provider
 cgprism uninstall ms
 ```
 
+### Manage runtime models
+
+```bash
+cgprism model [[PROVIDER_ID]@[MODEL_OWNER]/[MODEL_REPO_NAME] or [MODEL_NAME]] [FLAGS]
+```
+
+- PROVIDER_ID: Use a provider ID of [providers](#providers)
+- MODEL_OWNER: The owner of the repo
+- MODEL_REPO_NAME: The model name repo
+- MODEL_NAME: The name of the model
+- FLAGS: [Flags](#flags-1) to diferent options
+
+#### Example
+
+Create a new Modelfile in the HuggingFace provider dir, opens a interactive menu to you choose which model.
+
+```bash
+cgprism model hg@ --new
+```
+
+Allows you to create a new model into Ollama using a Modelfile
+
+```bash
+cgprism model hg@ --create --ollama
+```
+
+#### Flags
+
+| Flag              | Function                                                |
+| ----------------- | ------------------------------------------------------- |
+| --new             | Creates a new Modelfile                                 |
+| --create --ollama | Create a new model in Ollama using a previous Modelcard |
+
+### Run models
+
+```bash
+cgprism run [[PROVIDER_ID]@[MODEL_OWNER]/[MODEL_REPO_NAME] or [MODEL_NAME]] [FLAGS]
+```
+
+- PROVIDER_ID: Use a provider ID of [providers](#providers)
+- MODEL_OWNER: The owner of the repo
+- MODEL_REPO_NAME: The model name repo
+- MODEL_NAME: The name of the model
+- FLAGS: [Flags](#flags-2) to diferent options
+
+#### Example
+
+Run a logged model (with Modelfile in CGPrism DB) with Ollama, opens a interactive menu to you choose which model.
+
+```bash
+cgprism run hg@ --ollama
+```
+
+> **Hint:** Hey!, downloaded a model in other provider and want to run with Ollama? Try to [create a model card](#manage-runtime-models)
+
+#### Flags
+
+| Flag     | Function                                                    |
+| -------- | ----------------------------------------------------------- |
+| --ollama | Runs a model from Ollama with modelcard logged with CGPrism |
+
 ### See repo documentation
 
 Look the .md's in the repo on your terminal
@@ -121,7 +183,7 @@ cgprism docs [SEARCH_TERM] [FLAGS]
 ```
 
 - `SEARCH_TERM`: A term used to search into the storage references.
-- `FLAGS`: The type of the term
+- `FLAGS`: [Flags](#flags-3) to optmize your searching
 
 #### Examples
 

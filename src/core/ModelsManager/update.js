@@ -52,6 +52,16 @@ export function updateModelsRuntime(id, runtime) {
   return stmt.run({ id, runtime });
 }
 
+export function updateModelsOllamaId(id, ollama_model_id) {
+  const stmt = db.prepare(`
+    UPDATE models
+    SET ollama_model_id = @ollama_model_id, updated_at = CURRENT_TIMESTAMP
+    WHERE id = @id
+  `);
+
+  return stmt.run({ id, ollama_model_id });
+}
+
 export function updateModelsStatus(id, status) {
   const stmt = db.prepare(`
     UPDATE models

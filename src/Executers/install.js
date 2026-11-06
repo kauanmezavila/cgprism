@@ -99,6 +99,7 @@ async function promptModel(installDetails, modelPath, hasLFS) {
       defaults.capabilities || defaults.variant?.join(", ") || "",
     ),
     gls: installDetails.gls || hasLFS ? 0 : 1,
+    ollama_model_id: null,
   };
 
   return model;

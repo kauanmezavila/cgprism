@@ -18,6 +18,7 @@ export function dbInit() {
       parameters TEXT,
       quantization TEXT,
       runtime TEXT,
+      ollama_model_id TEXT,
       context_length INTEGER,
       capabilities TEXT,
       gls INTEGER,
@@ -57,6 +58,7 @@ export function addModel(model) {
       parameters,
       quantization,
       runtime,
+      ollama_model_id,
       context_length,
       capabilities,
       gls
@@ -74,6 +76,7 @@ export function addModel(model) {
       @parameters,
       @quantization,
       @runtime,
+      @ollama_model_id,
       @context_length,
       @capabilities,
       @gls

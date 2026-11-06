@@ -91,5 +91,3 @@ export async function showDocs(args = process.argv.slice(2)) {
     return null;
   }
 }
-
-export default showDocs;

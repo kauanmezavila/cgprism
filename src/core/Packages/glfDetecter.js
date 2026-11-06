@@ -4,6 +4,9 @@ import { promisify } from "node:util";
 const execFileAsync = promisify(execFile);
 
 export async function detectLFS(repoPath) {
+  const { stdout } = await execFileAsync("git", ["lfs", "install"], {
+    cwd: repoPath,
+  });
   try {
     const { stdout } = await execFileAsync("git", ["lfs", "ls-files"], {
       cwd: repoPath,
