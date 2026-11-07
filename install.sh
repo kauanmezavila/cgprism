@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
@@ -27,7 +28,7 @@ case "${ID:-}" in
         sudo apt-get install -y git git-lfs curl ca-certificates
 
         # Install Node.js 22+ if missing or outdated
-        if ! command -v node >/dev/null || \
+        if ! command -v node >/dev/null 2>&1 ||
            [[ "$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || echo 0)" -lt 22 ]]; then
             curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
             sudo apt-get install -y nodejs
@@ -56,9 +57,32 @@ if ! command -v pnpm >/dev/null 2>&1; then
     sudo npm install -g pnpm
 fi
 
+# Install Ollama
+if command -v ollama >/dev/null 2>&1; then
+    info "Ollama is already installed."
+else
+    info "Installing Ollama..."
+    curl -fsSL https://ollama.com/install.sh | sh
+fi
+
+# Start Ollama service if systemd is available
+if command -v systemctl >/dev/null 2>&1; then
+    if systemctl list-unit-files ollama.service >/dev/null 2>&1; then
+        sudo systemctl enable --now ollama
+    fi
+fi
+
+# Verify Ollama installation
+if command -v ollama >/dev/null 2>&1; then
+    info "Ollama installed: $(ollama --version)"
+else
+    fail "Ollama installation failed."
+fi
+
+# Configure Git LFS
 git lfs install
 
-# Clone or update
+# Clone or update CGPrism
 if [[ -d "$INSTALL_DIR/.git" ]]; then
     info "Updating CGPrism..."
     git -C "$INSTALL_DIR" pull --ff-only
@@ -76,6 +100,7 @@ pnpm install
 # Configure pnpm global directory for current user
 PNPM_HOME="$HOME/.local/share/pnpm"
 mkdir -p "$PNPM_HOME"
+
 export PNPM_HOME
 export PATH="$PNPM_HOME:$PATH"
 
@@ -83,4 +108,5 @@ pnpm config set global-bin-dir "$PNPM_HOME"
 pnpm add -g .
 
 info "CGPrism installation completed!"
+info "Ollama is ready."
 info "Run: cgprism"

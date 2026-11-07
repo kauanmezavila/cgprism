@@ -18,6 +18,23 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 - TUI docs navigation
 - Run models
 
+- [Install](#install-models) model repositories from [3 providers](#providers)
+- Automatic Git LFS detection
+- Register models in an DB
+- [Install](#install-models) and register models directly from Ollama
+- [Create](#manage-runtime-models) Modelfiles for registered models
+- [Deploy](#manage-runtime-models) downloaded models to Ollama
+- [Run](#run-models) registered models with Ollama (probally may need [previous configuration, just two commands](#manage-runtime-models))
+- [List](#list-models) registered models
+- [Uninstall](#uninstall-models) models, repositories, owners, or providers
+- [Inspect](#hardware-and-model-compatibility) hardware information
+- [Estimate](#hardware-and-model-compatibility) models compatibility using hardware heuristics
+- [Benchmark](#hardware-and-model-compatibility) hardware using heuristic analysis
+- [Search](#see-repo-documentation) local documentation by name, provider, owner, and etc.
+- [CGPrism Doctor](#doctor) for integreti analyzes
+- Configure custom data storage with CGPRISM_HOME
+- [Navigate documentation](#see-repo-documentation) through the terminal
+
 ## What it CAN'T do now / What it WILL do in the future.
 
 - Search models
@@ -56,6 +73,7 @@ Requirements:
 - [Git LFS](https://git-lfs.com/)
 - [Node.js 22 or newer](https://nodejs.org/en/download)
 - [pnpm](https://pnpm.io/installation)
+- [Ollama](https://ollama.com/download)
 
 Clone and install CGPrism:
 
