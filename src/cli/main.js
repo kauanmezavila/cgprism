@@ -20,6 +20,7 @@ import {
   createModelFile,
   createModelWithOllama,
 } from "../Executers/model.js";
+import { listModels } from "../Executers/list.js";
 
 import { dirname } from "node:path";
 
@@ -174,4 +175,10 @@ if (version) {
   if (resolvedQuery.ollama) {
     await runModelWithOllama(modelQuery);
   }
+} else if (command === "list") {
+  console.log(banner);
+  console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);
+  console.log(t.dim(`Resolved:\n${JSON.stringify(resolvedQuery, null, 2)}\n`));
+
+  await listModels();
 }

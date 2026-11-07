@@ -60,6 +60,12 @@ pnpm install -g .
 cgprism --version
 ```
 
+### List models
+
+```bash
+cgprism list
+```
+
 ### Install models
 
 ```bash
@@ -79,10 +85,10 @@ cgprism install ms@MiniMax/MiniMax-M3.1-Flash.git --gls
 
 #### Flags
 
-| Flag                  | Function                                      |
-| --------------------- | --------------------------------------------- |
-| --gls                 | Detect and install GLS pointers in the repo   |
-| --gls --full --ollama | Will install and deploy one model with ollama |
+| Flag                  | Function                                                                                 |
+| --------------------- | ---------------------------------------------------------------------------------------- |
+| --gls                 | Detect and install GLS pointers in the repo                                              |
+| --gls --full --ollama | Will install and deploy ONE model with ollama (repos with multiple models may fail here) |
 
 ### Uninstall models
 

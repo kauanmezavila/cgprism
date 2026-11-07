@@ -155,9 +155,7 @@ export async function createModelWithOllama(packageRoot, query) {
 
   const id = randomUUID();
 
-  await run("ollama", ["create", id, "-f", modelfilePath], {
-    raw: true,
-  });
+  await run("ollama", ["create", id, "-f", modelfilePath]);
 
   updateModelsOllamaId(selected.id, id);
 
