@@ -130,16 +130,29 @@ if (version) {
   console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);
   console.log(t.dim(`Resolved:\n${JSON.stringify(resolvedQuery, null, 2)}\n`));
 
+  let ollamaIDs = [];
   if (resolvedQuery.file) {
-    uninstallModelsFile(resolvedQuery);
+    ollamaIDs = await uninstallModelsFile(resolvedQuery);
   } else if (resolvedQuery.model) {
-    uninstallModelsRepo(resolvedQuery);
+    ollamaIDs = await uninstallModelsRepo(resolvedQuery);
   } else if (resolvedQuery.owner) {
-    uninstallOwner(resolvedQuery);
+    ollamaIDs = await uninstallOwner(resolvedQuery);
   } else if (resolvedQuery.provider) {
-    uninstallProvider(resolvedQuery);
+    ollamaIDs = await uninstallProvider(resolvedQuery);
   } else {
     console.log("Brutal > Missing info on the query");
+  }
+
+  console.log("\n");
+  if (ollamaIDs && ollamaIDs.length > 0) {
+    console.log(
+      await t.spinner("Removing Ollama models...\n", async () => {
+        for (const id of ollamaIDs) {
+          await run("ollama", ["rm", id]);
+        }
+      }),
+    );
+    console.log(t.green("\nOK") + " Ollama models removed.");
   }
 } else if (command === "docs") {
   console.log(banner);

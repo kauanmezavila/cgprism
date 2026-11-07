@@ -12,7 +12,18 @@ import {
 import {
   getModelsOwner,
   getModelsProvider,
+  getModelsPath,
 } from "../core/ModelsManager/get.js";
+
+function ollamaIds(models) {
+  return [
+    ...new Set(
+      models
+        .map((model) => model.ollama_model_id)
+        .filter((id) => typeof id === "string" && id.length > 0),
+    ),
+  ];
+}
 
 export async function uninstallModelsRepo(pathDetails) {
   if (!pathDetails?.provider || !pathDetails?.owner || !pathDetails?.model) {
@@ -37,6 +48,13 @@ export async function uninstallModelsRepo(pathDetails) {
     try {
       const deleteAsk = await askBoolean("Are you sure?", false);
       if (deleteAsk) {
+        const idsToUninstall = ollamaIds(
+          getModelsOwner(pathDetails.owner).filter(
+            (model) =>
+              model.provider === pathDetails.provider &&
+              model.path?.startsWith(mainPath),
+          ),
+        );
         await rm(mainPath, {
           recursive: true,
           force: false,
@@ -46,14 +64,17 @@ export async function uninstallModelsRepo(pathDetails) {
           t.green("\nOK"),
           `${pathDetails.model} from ${pathDetails.owner} was burned...`,
         );
+        return idsToUninstall;
       } else {
         console.log(
           t.green("\nOK"),
           `Operation cancelled, ${t.italic(t.gradient(pathDetails.model))} from ${pathDetails.owner} is safe, by now...`,
         );
+        return [];
       }
     } catch {
       console.error("\n\nBrutal > Something happened...");
+      return [];
     }
   }
 }
@@ -89,6 +110,7 @@ export async function uninstallModelsFile(pathDetails) {
     try {
       const deleteAsk = await askBoolean("Are you sure?", false);
       if (deleteAsk) {
+        const idsToUninstall = ollamaIds(getModelsPath(mainPath));
         await rm(mainPath, {
           recursive: true,
           force: false,
@@ -98,14 +120,17 @@ export async function uninstallModelsFile(pathDetails) {
           t.green("\nOK"),
           `${pathDetails.file} from ${join(pathDetails.owner, pathDetails.model)} was burned...`,
         );
+        return idsToUninstall;
       } else {
         console.log(
           t.green("\nOK"),
           `Operation cancelled, ${t.italic(t.gradient(pathDetails.model))} from ${pathDetails.owner} is safe, by now...`,
         );
+        return [];
       }
     } catch {
       console.error("\n\nBrutal > Something happened...");
+      return [];
     }
   }
 }
@@ -132,6 +157,7 @@ export async function uninstallOwner(pathDetails) {
     try {
       const deleteAsk = await askBoolean("Are you sure?", false);
       if (deleteAsk) {
+        const idsToUninstall = ollamaIds(getModelsOwner(pathDetails.owner));
         await rm(mainPath, {
           recursive: true,
           force: false,
@@ -141,14 +167,17 @@ export async function uninstallOwner(pathDetails) {
           t.green("\nOK"),
           `All of ${pathDetails.owner} work was burned...`,
         );
+        return idsToUninstall;
       } else {
         console.log(
           t.green("\nOK"),
           `Operation cancelled, ${pathDetails.owner} models are safe, by now...`,
         );
+        return [];
       }
     } catch {
       console.error("\n\nBrutal > Something happened...");
+      return [];
     }
   }
 }
@@ -172,6 +201,9 @@ export async function uninstallProvider(pathDetails) {
     try {
       const deleteAsk = await askBoolean("Are you sure?", false);
       if (deleteAsk) {
+        const idsToUninstall = ollamaIds(
+          getModelsProvider(pathDetails.provider),
+        );
         await rm(mainPath, {
           recursive: true,
           force: false,
@@ -181,14 +213,17 @@ export async function uninstallProvider(pathDetails) {
           t.green("\nOK"),
           `All models provided by ${pathDetails.provider} are burned...`,
         );
+        return idsToUninstall;
       } else {
         console.log(
           t.green("\nOK"),
           `Operation cancelled, models provided by ${pathDetails.provider} are safe, by now...`,
         );
+        return [];
       }
     } catch {
       console.error("\n\nBrutal > Something happened...");
+      return [];
     }
   }
 }
