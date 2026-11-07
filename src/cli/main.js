@@ -33,6 +33,9 @@ import {
   initStorage,
   saveCommand,
 } from "../core/StorageManager/index.js";
+import { dbInit } from "../core/ModelsManager/registry.js";
+
+import { randomModel } from "../core/Packages/randomModel.js";
 
 import { dirname } from "node:path";
 
@@ -44,6 +47,7 @@ const packageRoot = path.resolve(__dirname, "../..");
 const args = process.argv.slice(2);
 
 initStorage();
+dbInit();
 if (args[0] !== "history") saveCommand(args.join(" "));
 
 const banner =
@@ -300,4 +304,7 @@ ${diskInfo}
 
     const capabilityt = await analyzeActualModels(system);
   }
+} else if (command === "startup") {
+  console.log(banner);
+  await randomModel();
 }
