@@ -1,6 +1,6 @@
 {
   "name": "cgprism",
-  "version": "0.1.0",
+  "version": "0.0.8",
   "type": "module",
   "bin": {
     "cgprism": "./src/cli/main.js"
@@ -12,7 +12,6 @@
     "validate": "prettier --check . || prettier --write ."
   },
   "dependencies": {
-    "@huggingface/hub": "^2.17.2",
     "@mdtui/markedit-terminal-render": "^0.1.0",
     "better-sqlite3": "^13.0.3",
     "pg": "^8.23.0",

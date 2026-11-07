@@ -90,6 +90,12 @@ If you are upgrading an older version and want to keep using its existing models
 cgprism --version
 ```
 
+### Doctor
+
+```bash
+cgprism doctor
+```
+
 ### List models
 
 ```bash

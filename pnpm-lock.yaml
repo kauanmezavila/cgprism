@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@huggingface/hub':
-        specifier: ^2.17.2
-        version: 2.17.3
       '@mdtui/markedit-terminal-render':
         specifier: ^0.1.0
         version: 0.1.0
@@ -25,20 +22,6 @@ importers:
         version: 5.33.19
 
 packages:
-
-  '@huggingface/blake3-jit@0.0.2':
-    resolution: {integrity: sha512-Bq7B5qabyjrJfhBsl85Jd2QBtf+HzRD7h7A9GfN2lzrrsABhOa5evVPgzoCTxR7Ub0QFj7YDK1YkYRWBU25+2w==}
-
-  '@huggingface/hub@2.17.3':
-    resolution: {integrity: sha512-TFAy0iot/xyuQIQKtkzHUsSfeZ6Ju6WgA8N4GrPAfESLNYILXdi+ENe24gQM8C3jH5rQrnswF2iZJf6SagnC/g==}
-    engines: {node: '>=18'}
-    hasBin: true
-
-  '@huggingface/tasks@0.21.46':
-    resolution: {integrity: sha512-iyRohYSg3tTD0vz6XUOUjN4il/wX/W9SuPfoVo2ZrDKOIPUqE6MCDu83OHekjlSuU6Prqt6nNW0Kpfg3iduewA==}
-
-  '@huggingface/xetchunk-wasm@0.2.0':
-    resolution: {integrity: sha512-cmp7oAAWeCpZGrVQTP/LxDtJdzGMfpxwkEVsZsk5jZQ2FwP2njm8LnyobhnQvLpkSAcJJwUzFJC0PYS9ZsqeTg==}
 
   '@mdtui/markedit-terminal-render@0.1.0':
     resolution: {integrity: sha512-p9wgPlLPcLu11Fp60ELNzlAaRT2PKzST9FFZ6W4gyXN+ZoYnMkYe66AFEEgFUH43XdoUGqBPOaeti4P6xjpFnQ==}
@@ -91,10 +74,6 @@ packages:
     engines: {node: '>=8.0.0', npm: '>=5.0.0'}
     hasBin: true
 
-  cli-progress@3.12.0:
-    resolution: {integrity: sha512-tRkV3HJ1ASwm19THiiLIXLO7Im7wlTuKnvkYaTkyoAPefqjNg7W7DHKUlGRxy9vxDvbyCYQkQozvptuMkGCg8A==}
-    engines: {node: '>=4'}
-
   cliui@7.0.4:
     resolution: {integrity: sha512-OcRE68cOsVMXp1Yvonl/fzkQOyjLSu/8bhPDfQt0e0/Eb283TKP20Fs2MqoPsr9SwA595rRCA+QMzYc9nBP+JQ==}
 
@@ -121,9 +100,6 @@ packages:
   escalade@3.2.0:
     resolution: {integrity: sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA==}
     engines: {node: '>=6'}
-
-  gearhash-jit@1.0.2:
-    resolution: {integrity: sha512-UhzJL4KXSdqAKepy/tZwmi2Rcy0YMmtiC4DQS4SURCuIWdh8ECZtnXK2ePRMLigfB61hRKdLK/Vgg2bSw73izQ==}
 
   get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
@@ -297,22 +273,6 @@ packages:
 
 snapshots:
 
-  '@huggingface/blake3-jit@0.0.2': {}
-
-  '@huggingface/hub@2.17.3':
-    dependencies:
-      '@huggingface/tasks': 0.21.46
-      '@huggingface/xetchunk-wasm': 0.2.0
-    optionalDependencies:
-      cli-progress: 3.12.0
-
-  '@huggingface/tasks@0.21.46': {}
-
-  '@huggingface/xetchunk-wasm@0.2.0':
-    dependencies:
-      '@huggingface/blake3-jit': 0.0.2
-      gearhash-jit: 1.0.2
-
   '@mdtui/markedit-terminal-render@0.1.0':
     dependencies:
       '@mdtui/markedit': 0.1.0
@@ -365,11 +325,6 @@ snapshots:
       parse5-htmlparser2-tree-adapter: 6.0.1
       yargs: 16.2.2
 
-  cli-progress@3.12.0:
-    dependencies:
-      string-width: 4.2.3
-    optional: true
-
   cliui@7.0.4:
     dependencies:
       string-width: 4.2.3
@@ -391,8 +346,6 @@ snapshots:
   environment@1.1.0: {}
 
   escalade@3.2.0: {}
-
-  gearhash-jit@1.0.2: {}
 
   get-caller-file@2.0.5: {}
 

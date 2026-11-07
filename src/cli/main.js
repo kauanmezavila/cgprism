@@ -27,6 +27,7 @@ import {
   heuristicAnalyze,
   analyzeActualModels,
 } from "../Executers/hardware.js";
+import { doctor } from "../Executers/doctor.js";
 
 import { dirname } from "node:path";
 
@@ -60,7 +61,10 @@ const version = args.includes("--version");
 const resolvedQuery = resolve(args.join(" "));
 
 if (version) {
-  console.log(t.italic(t.gradient(`CGPrism`) + " 0.0.1"));
+  console.log(t.italic(t.gradient(`CGPrism`) + " 0.0.8"));
+} else if (command === "doctor") {
+  console.log(banner);
+  await doctor();
 } else if (command === "install") {
   console.log(banner);
   console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);
