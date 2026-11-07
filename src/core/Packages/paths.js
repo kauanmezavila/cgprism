@@ -8,8 +8,11 @@ export const dataRoot = configuredRoot
   : path.join(os.homedir(), ".cgprism");
 export const modelsRoot = path.join(dataRoot, "Models");
 export const registryPath = path.join(dataRoot, "registry.db");
+export const storageManagerRoot = path.join(dataRoot, "StorageManager");
+export const storageDatabasePath = path.join(storageManagerRoot, "storage.db");
 
 fs.mkdirSync(modelsRoot, { recursive: true });
+fs.mkdirSync(storageManagerRoot, { recursive: true });
 
 export function resolveModelsPath(...segments) {
   const target = path.resolve(modelsRoot, ...segments);

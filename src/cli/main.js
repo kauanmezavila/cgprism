@@ -28,6 +28,11 @@ import {
   analyzeActualModels,
 } from "../Executers/hardware.js";
 import { doctor } from "../Executers/doctor.js";
+import {
+  getCommandHistory,
+  initStorage,
+  saveCommand,
+} from "../core/StorageManager/index.js";
 
 import { dirname } from "node:path";
 
@@ -37,6 +42,9 @@ const __dirname = path.dirname(__filename);
 const packageRoot = path.resolve(__dirname, "../..");
 
 const args = process.argv.slice(2);
+
+initStorage();
+if (args[0] !== "history") saveCommand(args.join(" "));
 
 const banner =
   t.gradient(
@@ -62,6 +70,10 @@ const resolvedQuery = resolve(args.join(" "));
 
 if (version) {
   console.log(t.italic(t.gradient(`CGPrism`) + " 0.0.8"));
+} else if (command === "history") {
+  for (const entry of getCommandHistory()) {
+    console.log(`#${entry.id} [${entry.executed_at}] ${entry.command}`);
+  }
 } else if (command === "doctor") {
   console.log(banner);
   await doctor();

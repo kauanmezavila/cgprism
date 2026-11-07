@@ -11,13 +11,6 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 
 ## What it CAN do now
 
-- Install models repos from Hugging Face
-- Install GLS pointers
-- Uninstall providers/owners/repos/models
-- Registring everything in a SQLite 3 DB
-- TUI docs navigation
-- Run models
-
 - [Install](#install-models) model repositories from [3 providers](#providers)
 - Automatic Git LFS detection
 - Register models in an DB
@@ -34,6 +27,7 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 - [CGPrism Doctor](#doctor) for integreti analyzes
 - Configure custom data storage with CGPRISM_HOME
 - [Navigate documentation](#see-repo-documentation) through the terminal
+- [Commands history](#commands-history)
 
 ## What it CAN'T do now / What it WILL do in the future.
 
@@ -98,6 +92,8 @@ $env:CGPRISM_HOME = 'D:\CGPrismData'
 
 I recommend keeping this directory when updating or reinstalling CGPrism.
 
+CGPrism also creates a separate `StorageManager/storage.db` SQLite database under this data directory for command history. It is independent of `registry.db`. Commands are recorded automatically, and `cgprism history` displays the most recent 100 entries.
+
 If you are upgrading an older version and want to keep using its existing models and registry, set CGPRISM_HOME to that version src/data. Alternatively, move the Models folder and registry.db into the new .cgprism directory.
 
 ## Commands
@@ -118,6 +114,12 @@ cgprism doctor
 
 ```bash
 cgprism list
+```
+
+### Commands history
+
+```bash
+cgprism history
 ```
 
 ### Install models
