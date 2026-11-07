@@ -2,7 +2,6 @@ import t from "../core/Packages/colors.js";
 
 import path from "node:path";
 import fs from "node:fs/promises";
-import os from "node:os";
 import readline from "node:readline";
 import { stdin, stdout } from "node:process";
 
@@ -10,6 +9,7 @@ import { ask } from "../core/Packages/ask.js";
 import { getModels } from "../core/ModelsManager/get.js";
 import { run } from "../core/Packages/run.js";
 import { updateModelsOllamaId } from "../core/ModelsManager/update.js";
+import { resolveModelPath } from "../core/Packages/paths.js";
 
 import { randomUUID } from "node:crypto";
 
@@ -141,15 +141,7 @@ export async function createModelWithOllama(packageRoot, query) {
 
   if (!selected) return null;
 
-  let modelPath;
-
-  if (selected.path.startsWith("~/")) {
-    modelPath = path.join(os.homedir(), selected.path.slice(2));
-  } else if (path.isAbsolute(selected.path)) {
-    modelPath = selected.path;
-  } else {
-    modelPath = path.resolve(packageRoot, selected.path);
-  }
+  const modelPath = resolveModelPath(selected.path, packageRoot);
 
   const modelfilePath = path.join(path.dirname(modelPath), "Modelfile");
 
@@ -189,9 +181,7 @@ export async function createModelFile(packageRoot, query) {
 
   if (!selected) return null;
 
-  let modelPath = path.isAbsolute(selected.path)
-    ? selected.path
-    : path.resolve(packageRoot, selected.path);
+  let modelPath = resolveModelPath(selected.path, packageRoot);
 
   if (
     selected.format?.toLowerCase().replace(".", "") === "safetensors" &&

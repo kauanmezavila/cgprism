@@ -7,8 +7,9 @@ import { getSize } from "../core/Packages/size.js";
 import { ask } from "../core/Packages/ask.js";
 import { detectLFS, pullLFS } from "../core/Packages/glfDetecter.js";
 
-import { join, extname, relative } from "node:path";
-import { access, readdir } from "node:fs/promises";
+import { join, extname, relative, dirname } from "node:path";
+import { access, readdir, mkdir } from "node:fs/promises";
+import { resolveModelsPath } from "../core/Packages/paths.js";
 
 import {
   addModel,
@@ -153,13 +154,8 @@ export default async function install(installDetails) {
     let mainPath;
 
     try {
-      mainPath = join(
-        "src",
-        "data",
-        "Models",
-        installDetails.provider,
-        installDetails.target,
-      );
+      mainPath = resolveModelsPath(installDetails.provider, installDetails.target);
+      await mkdir(dirname(mainPath), { recursive: true });
     } catch {
       console.error(t.red("Hm, cant resolve the main path!"));
 

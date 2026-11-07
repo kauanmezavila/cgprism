@@ -36,21 +36,51 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 
 ## Installing it
 
-First, install all the technologys if you dont have:
+### Quick install
 
-- [git](https://git-scm.com/install)
-- [Node.js](https://nodejs.org/en/download)
-- [pnpm](https://pnpm.io/installation)
+#### Linux and MacOS (unix-based)
 
 ```bash
-git install gls
+curl -fsSL https://raw.githubusercontent.com/kauanmezavila/cgprism/main/install.sh | bash
+```
+
+#### Windows
+
+```bash
+irm https://raw.githubusercontent.com/kauanmezavila/cgprism/main/install.ps1 | iex
+```
+
+Requirements:
+
+- [Git](https://git-scm.com/install)
+- [Git LFS](https://git-lfs.com/)
+- [Node.js 22 or newer](https://nodejs.org/en/download)
+- [pnpm](https://pnpm.io/installation)
+
+Clone and install CGPrism:
+
+```bash
 git clone https://github.com/kauanmezavila/cgprism.git
 cd cgprism
-
-chmod +x src/cli/main.js # Run this only in Unix based systems
-
-pnpm install -g .
+pnpm install
+pnpm add -g .
 ```
+
+If the command is not found, run `pnpm setup` and restart the shell.
+
+CGPrism stores the registry.db and downloaded repos in .cgprism in the home directory. You can set `CGPRISM_HOME` to set another directory:
+
+```bash
+export CGPRISM_HOME=/mnt/data/cgprism
+```
+
+```powershell
+$env:CGPRISM_HOME = 'D:\CGPrismData'
+```
+
+I recommend keeping this directory when updating or reinstalling CGPrism.
+
+If you are upgrading an older version and want to keep using its existing models and registry, set CGPRISM_HOME to that version src/data. Alternatively, move the Models folder and registry.db into the new .cgprism directory.
 
 ## Commands
 

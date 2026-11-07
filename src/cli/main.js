@@ -35,9 +35,6 @@ const __dirname = path.dirname(__filename);
 
 const packageRoot = path.resolve(__dirname, "../..");
 
-const modelsPath = path.join(packageRoot, "src", "data", "Models");
-const registryPath = path.join(packageRoot, "src", "data", "registry.db");
-
 const args = process.argv.slice(2);
 
 const banner =

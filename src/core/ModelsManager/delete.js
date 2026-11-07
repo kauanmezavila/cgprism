@@ -1,7 +1,8 @@
 import Database from "better-sqlite3";
 import { normalizeParameters } from "./registry.js";
+import { registryPath } from "../Packages/paths.js";
 
-const db = new Database("src/data/registry.db");
+const db = new Database(registryPath);
 
 async function deleteModelsBy(column, value) {
   return db

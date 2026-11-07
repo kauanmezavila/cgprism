@@ -1,6 +1,7 @@
 import Database from "better-sqlite3";
+import { registryPath } from "../Packages/paths.js";
 
-const db = new Database("src/data/registry.db");
+const db = new Database(registryPath);
 
 export function dbInit() {
   db.exec(`

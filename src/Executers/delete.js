@@ -2,7 +2,8 @@ import t from "../core/Packages/colors.js";
 
 import { rm } from "node:fs/promises";
 import { askBoolean } from "../core/Packages/ask.js";
-import { join } from "node:path";
+import { join, sep } from "node:path";
+import { resolveModelsPath } from "../core/Packages/paths.js";
 import {
   deleteModelsSpecial,
   deleteModelsOwner,
@@ -29,10 +30,7 @@ export async function uninstallModelsRepo(pathDetails) {
   if (!pathDetails?.provider || !pathDetails?.owner || !pathDetails?.model) {
     throw new Error("\n\nBrutal > Invalid model name details");
   } else {
-    const mainPath = join(
-      "src",
-      "data",
-      "Models",
+    const mainPath = resolveModelsPath(
       pathDetails.provider,
       pathDetails.owner,
       pathDetails.model,
@@ -52,7 +50,8 @@ export async function uninstallModelsRepo(pathDetails) {
           getModelsOwner(pathDetails.owner).filter(
             (model) =>
               model.provider === pathDetails.provider &&
-              model.path?.startsWith(mainPath),
+              (model.path === mainPath ||
+                model.path?.startsWith(`${mainPath}${sep}`)),
           ),
         );
         await rm(mainPath, {
@@ -88,10 +87,7 @@ export async function uninstallModelsFile(pathDetails) {
   ) {
     throw new Error("\n\nBrutal > Invalid model name details");
   } else {
-    const mainPath = join(
-      "src",
-      "data",
-      "Models",
+    const mainPath = resolveModelsPath(
       pathDetails.provider,
       pathDetails.owner,
       pathDetails.model,
@@ -139,13 +135,7 @@ export async function uninstallOwner(pathDetails) {
   if (!pathDetails?.provider || !pathDetails?.owner) {
     throw new Error("\n\nBrutal > Invalid owner details");
   } else {
-    const mainPath = join(
-      "src",
-      "data",
-      "Models",
-      pathDetails.provider,
-      pathDetails.owner,
-    );
+    const mainPath = resolveModelsPath(pathDetails.provider, pathDetails.owner);
 
     console.log(t.dim("Deleting: " + mainPath));
     console.log(
@@ -186,7 +176,7 @@ export async function uninstallProvider(pathDetails) {
   if (!pathDetails?.provider) {
     throw new Error("\n\nBrutal > Invalid provider details");
   } else {
-    const mainPath = join("src", "data", "Models", pathDetails.provider);
+    const mainPath = resolveModelsPath(pathDetails.provider);
 
     console.log(t.dim("Deleting: " + mainPath));
     console.log(

@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  cgprism: 'link:'
-
 importers:
 
   .:
@@ -20,9 +17,6 @@ importers:
       better-sqlite3:
         specifier: ^13.0.3
         version: 13.0.3
-      cgprism:
-        specifier: link:.
-        version: 'link:'
       pg:
         specifier: ^8.23.0
         version: 8.23.0
