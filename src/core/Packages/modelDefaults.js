@@ -42,9 +42,9 @@ export async function getModelDefaults(
       ...defaults,
       family: config.model_type || defaults.family,
       architecture: config.architectures?.join(", ") || defaults.architecture,
-      parameterSize: parameterCount
-        ? String(parameterCount)
-        : defaults.parameterSize,
+      parameters: parameterCount
+        ? parameterCount / 1_000_000_000
+        : defaults.parameters,
       contextLength:
         config.max_position_embeddings ||
         config.max_sequence_length ||

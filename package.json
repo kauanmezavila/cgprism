@@ -16,6 +16,7 @@
     "@mdtui/markedit-terminal-render": "^0.1.0",
     "better-sqlite3": "^13.0.3",
     "cgprism": "link:",
-    "pg": "^8.23.0"
+    "pg": "^8.23.0",
+    "systeminformation": "^5.33.19"
   }
 }

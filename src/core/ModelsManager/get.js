@@ -1,4 +1,5 @@
 import Database from "better-sqlite3";
+import { normalizeParameters } from "./registry.js";
 
 const db = new Database("src/data/registry.db");
 
@@ -42,7 +43,7 @@ export function getModelsStatus(status) {
 }
 
 export function getModelsParams(parameters) {
-  return getModelsBy("parameters", parameters);
+  return getModelsBy("parameters", normalizeParameters(parameters));
 }
 
 export function getModelsId(id) {

@@ -19,7 +19,7 @@ export async function listModels() {
         ) +
           `\n   ${field("Format:", model.format, 15)} | ${field("Runtime:", model.runtime, 15)} |` +
           `\n   ${field("Family:", model.family, 15)} | ${field("Architecture:", model.architecture, 15)} |` +
-          `\n   ${field("Parameters:", model.parameters, 15)} | ${field("Quantization:", model.quantization, 15)} |` +
+          `\n   ${field("Parameters (B):", model.parameters, 15)} | ${field("Quantization:", model.quantization, 15)} |` +
           `\n   ${field("Size (bytes):", model.size_bytes, 15)} |                                 |` +
           `\n   ------------------------------------------------------------------|` +
           `\n   ${field("Ollama model ID:", model.ollama_model_id, 28)} |\n`,

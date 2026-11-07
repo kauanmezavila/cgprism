@@ -13,8 +13,7 @@ export function resolveModelName(requiredName) {
     name,
     family: null,
     version: null,
-    parameterSize: null,
-    parameterCount: null,
+    parameters: null,
     quantization: null,
     precision: null,
     variant: null,
@@ -70,15 +69,7 @@ export function resolveModelName(requiredName) {
     const value = Number(parameterMatch[1]);
     const unit = parameterMatch[2].toUpperCase();
 
-    model.parameterSize = `${value}${unit}`;
-
-    if (unit === "B") {
-      model.parameterCount = value * 1_000_000_000;
-    }
-
-    if (unit === "M") {
-      model.parameterCount = value * 1_000_000;
-    }
+    model.parameters = unit === "B" ? value : value / 1000;
   }
 
   const quantizationPatterns = [

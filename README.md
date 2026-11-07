@@ -1,7 +1,7 @@
 <div align="center">
   <h1>CGPrism</h1>
   <p>The local interface for AI management</p>
-  <p><b>v0.0.6: Llama Better Specialist</b></p>
+  <p><b>v0.0.8: The local AI enthusiast</b></p>
 </div>
 
 ## What it is?
@@ -120,6 +120,22 @@ Uninstall all repos form a provider
 cgprism uninstall ms
 ```
 
+### Hardware and model compatibility
+
+```bash
+cgprism hardware [FLAGS]
+```
+
+- FLAGS: [Flags](#flags-1) to options
+
+#### Flags
+
+| Flag        | Function                                                             |
+| ----------- | -------------------------------------------------------------------- |
+| --about     | Hardaware infos                                                      |
+| --actual    | Judges if the installed models can run based on an heuristic analyse |
+| --benchmark | Makes an heuristic analyse in the system                             |
+
 ### Manage runtime models
 
 ```bash
@@ -130,7 +146,7 @@ cgprism model [[PROVIDER_ID]@[MODEL_OWNER]/[MODEL_REPO_NAME] or [MODEL_NAME]] [F
 - MODEL_OWNER: The owner of the repo
 - MODEL_REPO_NAME: The model name repo
 - MODEL_NAME: The name of the model
-- FLAGS: [Flags](#flags-1) to diferent options
+- FLAGS: [Flags](#flags-2) to diferent options
 
 #### Example
 
@@ -163,7 +179,7 @@ cgprism run [[PROVIDER_ID]@[MODEL_OWNER]/[MODEL_REPO_NAME] or [MODEL_NAME]] [FLA
 - MODEL_OWNER: The owner of the repo
 - MODEL_REPO_NAME: The model name repo
 - MODEL_NAME: The name of the model
-- FLAGS: [Flags](#flags-2) to diferent options
+- FLAGS: [Flags](#flags-3) to diferent options
 
 #### Example
 
@@ -173,7 +189,7 @@ Run a logged model (with Modelfile in CGPrism DB) with Ollama, opens a interacti
 cgprism run hg@ --ollama
 ```
 
-> **Hint:** Hey!, downloaded a model in other provider and want to run with Ollama? Try to [create a model card](#manage-runtime-models)
+> **Hint:** Hey! Downloaded a model in other provider and want to run with Ollama? Try to [create a model card](#manage-runtime-models)
 
 #### Flags
 
@@ -190,7 +206,7 @@ cgprism docs [SEARCH_TERM] [FLAGS]
 ```
 
 - `SEARCH_TERM`: A term used to search into the storage references.
-- `FLAGS`: [Flags](#flags-3) to optmize your searching
+- `FLAGS`: [Flags](#flags-4) to optmize your searching
 
 #### Examples
 

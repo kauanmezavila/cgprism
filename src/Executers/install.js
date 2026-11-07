@@ -10,7 +10,11 @@ import { detectLFS, pullLFS } from "../core/Packages/glfDetecter.js";
 import { join, extname, relative } from "node:path";
 import { access, readdir } from "node:fs/promises";
 
-import { addModel, dbInit } from "../core/ModelsManager/registry.js";
+import {
+  addModel,
+  dbInit,
+  normalizeParameters,
+} from "../core/ModelsManager/registry.js";
 
 const MODEL_EXTENSIONS = new Set([
   ".gguf",
@@ -85,7 +89,12 @@ async function promptModel(installDetails, modelPath, hasLFS) {
 
     size_bytes: size.total,
 
-    parameters: await ask("Params", defaults.parameterSize || ""),
+    parameters: normalizeParameters(
+      await ask(
+        "Params (billions; e.g. 7 or 0.5)",
+        String(defaults.parameters ?? ""),
+      ),
+    ),
 
     quantization: await ask("Quantization", defaults.quantization || ""),
 
@@ -123,7 +132,9 @@ async function promptOllamaModel(installDetails) {
 
     size_bytes: await ask("Size [This one we can't measure]"),
 
-    parameters: await ask("Params", ""),
+    parameters: normalizeParameters(
+      await ask("Params (billions; e.g. 7 or 0.5)", ""),
+    ),
 
     quantization: await ask("Quantization", ""),
 

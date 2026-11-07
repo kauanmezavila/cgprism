@@ -21,6 +21,12 @@ import {
   createModelWithOllama,
 } from "../Executers/model.js";
 import { listModels } from "../Executers/list.js";
+import {
+  getSystemInfo,
+  analyzeModelCapability,
+  heuristicAnalyze,
+  analyzeActualModels,
+} from "../Executers/hardware.js";
 
 import { dirname } from "node:path";
 
@@ -181,4 +187,91 @@ if (version) {
   console.log(t.dim(`Resolved:\n${JSON.stringify(resolvedQuery, null, 2)}\n`));
 
   await listModels();
+} else if (command === "hardware") {
+  console.log(banner);
+  console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);
+  console.log(t.dim(`Resolved:\n${JSON.stringify(resolvedQuery, null, 2)}\n`));
+  if (resolvedQuery.about) {
+    const system = await getSystemInfo();
+
+    const gpuInfo = system.graphics.controllers
+      .map((gpu) => `   - ${t.green(`${gpu.vendor} ${gpu.model}`)}`)
+      .join("\n");
+
+    const diskInfo = system.storage.disks
+      .map(
+        (disk) => `   - Name: ${t.green(disk.name)}
+     Model: ${t.green(disk.vendor ?? "")} ${t.green(disk.model ?? "")}
+     Size: ${t.green((disk.size / 1024 ** 3).toFixed(2))} ${t.green(`GB`)}
+     Type: ${t.green(disk.type ?? "Unknown")}
+  `,
+      )
+      .join("\n");
+
+    console.log(`
+${"About " + t.yellow(system.system.hostname)} [${t.dim(system.collectedAt)}]
+  > OS: ${t.green(`${system.system.os.distro} ${system.system.os.zena} ${system.system.os.release} ${system.system.os.arch} ${system.system.release}`)}
+        ${t.dim(`\\[Serial: ${system.system.os.serial ?? "N/A"}]`)}
+
+  > CPU: ${t.green(`${system.cpu.manufacturer} ${system.cpu.brand} [${system.cpu.logicalCores} threads]`)}
+  > RAM: ${t.green(`${(system.memory.used / 1024 ** 3).toFixed(2)} / ${(system.memory.total / 1024 ** 3).toFixed(2)} GB`)}
+
+  > GPU:
+${gpuInfo}
+
+  > DISK:
+${diskInfo}
+`);
+  } else if (resolvedQuery.benchmark) {
+    const system = await getSystemInfo();
+
+    const capability = analyzeModelCapability(system);
+
+    const { hardware, limits, execution, metadata } = capability;
+
+    heuristicAnalyze(limits, execution, metadata);
+  } else if (resolvedQuery.actual) {
+    const system = await getSystemInfo();
+
+    const capability = await analyzeActualModels(system);
+  } else {
+    const system = await getSystemInfo();
+
+    const gpuInfo = system.graphics.controllers
+      .map((gpu) => `   - ${t.green(`${gpu.vendor} ${gpu.model}`)}`)
+      .join("\n");
+
+    const diskInfo = system.storage.disks
+      .map(
+        (disk) => `   - Name: ${t.green(disk.name)}
+     Model: ${t.green(disk.vendor ?? "")} ${t.green(disk.model ?? "")}
+     Size: ${t.green((disk.size / 1024 ** 3).toFixed(2))} ${t.green(`GB`)}
+     Type: ${t.green(disk.type ?? "Unknown")}
+  `,
+      )
+      .join("\n");
+
+    console.log(`
+${"About " + t.yellow(system.system.hostname)} [${t.dim(system.collectedAt)}]
+  > OS: ${t.green(`${system.system.os.distro} ${system.system.os.zena} ${system.system.os.release} ${system.system.os.arch} ${system.system.release}`)}
+        ${t.dim(`\\[Serial: ${system.system.os.serial ?? "N/A"}]`)}
+
+  > CPU: ${t.green(`${system.cpu.manufacturer} ${system.cpu.brand} [${system.cpu.logicalCores} threads]`)}
+  > RAM: ${t.green(`${(system.memory.used / 1024 ** 3).toFixed(2)} / ${(system.memory.total / 1024 ** 3).toFixed(2)} GB`)}
+
+  > GPU:
+${gpuInfo}
+
+  > DISK:
+${diskInfo}
+`);
+
+    const capability = analyzeModelCapability(system);
+
+    const { hardware, limits, execution, metadata } = capability;
+
+    heuristicAnalyze(limits, execution, metadata);
+
+    const capabilityt = await analyzeActualModels(system);
+  }
 }

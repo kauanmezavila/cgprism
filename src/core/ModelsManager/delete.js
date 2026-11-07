@@ -1,4 +1,5 @@
 import Database from "better-sqlite3";
+import { normalizeParameters } from "./registry.js";
 
 const db = new Database("src/data/registry.db");
 
@@ -59,7 +60,7 @@ export function deleteModelsStatus(status) {
 }
 
 export function deleteModelsParams(parameters) {
-  return deleteModelsBy("parameters", parameters);
+  return deleteModelsBy("parameters", normalizeParameters(parameters));
 }
 
 export function deleteModelsId(id) {
