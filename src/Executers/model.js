@@ -164,6 +164,21 @@ export async function createModelWithOllama(packageRoot, query) {
   return { id };
 }
 
+export async function createInternalModelWithOllama(query, modelName) {
+  const matches = resolveModel(query);
+
+  if (!matches.length) {
+    console.log(t.red("Brutal > Model not found."));
+    return null;
+  }
+
+  const selected = await chooseModel(matches);
+
+  if (!selected) return null;
+
+  updateModelsOllamaId(selected.id, modelName);
+}
+
 export async function createModelFile(packageRoot, query) {
   const matches = resolveModel(query);
 

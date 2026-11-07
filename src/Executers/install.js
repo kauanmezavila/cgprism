@@ -105,92 +105,161 @@ async function promptModel(installDetails, modelPath, hasLFS) {
   return model;
 }
 
+async function promptOllamaModel(installDetails) {
+  const model = {
+    name: await ask("Name", installDetails.owner),
+    family: await ask("Family", ""),
+    architecture: await ask("Architecture", ""),
+
+    provider: "ol",
+
+    owner: await ask("Owner", ""),
+
+    version: await ask("Version", ""),
+
+    path: "",
+
+    format: await ask("Format", ""),
+
+    size_bytes: await ask("Size [This one we can't measure]"),
+
+    parameters: await ask("Params", ""),
+
+    quantization: await ask("Quantization", ""),
+
+    runtime: "ollama",
+    context_length: Number(await ask("Context length", String(""))) || 0,
+    capabilities: await ask("Capabilities", ""),
+    gls: 0,
+    ollama_model_id: null,
+  };
+
+  return model;
+}
+
 export default async function install(installDetails) {
-  let mainPath;
-
-  try {
-    mainPath = join(
-      "src",
-      "data",
-      "Models",
-      installDetails.provider,
-      installDetails.target,
-    );
-  } catch {
-    console.error(t.red("Hm, cant resolve the main path!"));
-
-    return;
-  }
-
-  console.log(
-    `Getting ready to download ${t.italic(t.gradient(installDetails.model))}`,
-  );
-
-  try {
-    if (!installDetails.providerUrl || !installDetails.target) {
-      throw new Error("Invalid provider or model repository");
-    }
+  if (installDetails.provider !== "ol") {
+    let mainPath;
 
     try {
-      await access(join(mainPath, ".git"));
-      console.log(`\n${t.green("OK")} using existing repository.`);
+      mainPath = join(
+        "src",
+        "data",
+        "Models",
+        installDetails.provider,
+        installDetails.target,
+      );
     } catch {
-      await run("git", [
-        "clone",
-        installDetails.providerUrl + installDetails.target,
-        mainPath,
-      ]);
-      console.log(`\n${t.green("OK")} repository cloned.`);
-    }
-
-    console.log(`${t.cyan("Checking Git LFS...")}`);
-
-    const hasLFS = await detectLFS(mainPath);
-
-    if (installDetails.gls) {
-      if (hasLFS) {
-        console.log(
-          `${t.yellow("Git LFS detected. Downloading model files...")}`,
-        );
-
-        await pullLFS(mainPath);
-
-        console.log(`${t.green("OK")} Git LFS files downloaded.`);
-      } else {
-        console.log(`${t.green("No Git LFS files detected.")}`);
-      }
-    }
-
-    console.log(`${t.cyan("Scanning repository...")}`);
-
-    const models = await scanModels(mainPath);
-
-    if (models.length === 0) {
-      console.log(t.red("Strange > No supported model files found."));
+      console.error(t.red("Hm, cant resolve the main path!"));
 
       return;
     }
 
-    console.log(`\n${t.green("Found!")} ${models.length} model(s):\n`);
+    console.log(
+      `Getting ready to download ${t.italic(t.gradient(installDetails.model))}`,
+    );
 
-    models.forEach((modelPath, index) => {
-      console.log(`  ${index + 1}. ${relative(mainPath, modelPath)}`);
-    });
+    try {
+      if (!installDetails.providerUrl || !installDetails.target) {
+        throw new Error("Invalid provider or model repository");
+      }
 
-    dbInit();
+      try {
+        await access(join(mainPath, ".git"));
+        console.log(`\n${t.green("OK")} using existing repository.`);
+      } catch {
+        await run("git", [
+          "clone",
+          installDetails.providerUrl + installDetails.target,
+          mainPath,
+        ]);
+        console.log(`\n${t.green("OK")} repository cloned.`);
+      }
 
-    for (const modelPath of models) {
-      const model = await promptModel(installDetails, modelPath, hasLFS);
+      console.log(`${t.cyan("Checking Git LFS...")}`);
+
+      const hasLFS = await detectLFS(mainPath);
+
+      if (installDetails.gls) {
+        if (hasLFS) {
+          console.log(
+            `${t.yellow("Git LFS detected. Downloading model files...")}`,
+          );
+
+          await pullLFS(mainPath);
+
+          console.log(`${t.green("OK")} Git LFS files downloaded.`);
+        } else {
+          console.log(`${t.green("No Git LFS files detected.")}`);
+        }
+      }
+
+      console.log(`${t.cyan("Scanning repository...")}`);
+
+      const models = await scanModels(mainPath);
+
+      if (models.length === 0) {
+        console.log(t.red("Strange > No supported model files found."));
+
+        return;
+      }
+
+      console.log(`\n${t.green("Found!")} ${models.length} model(s):\n`);
+
+      models.forEach((modelPath, index) => {
+        console.log(`  ${index + 1}. ${relative(mainPath, modelPath)}`);
+      });
+
+      dbInit();
+
+      for (const modelPath of models) {
+        const model = await promptModel(installDetails, modelPath, hasLFS);
+
+        addModel(model);
+
+        console.log(
+          `${t.green("OK")} Model registered: ${t.italic(t.gradient(model.name))}`,
+        );
+      }
+
+      console.log(`\n${t.green("Installation complete.")}`);
+    } catch (error) {
+      console.error(t.red(`Brutal > ${error.message}`));
+    }
+  } else {
+    console.log(
+      `Getting ready to download ${t.italic(t.gradient(installDetails.owner))} from ${t.gradient("Ollama")}`,
+    );
+
+    try {
+      if (!installDetails.target) {
+        throw new Error("Invalid provider or model repository");
+      }
+
+      console.log(
+        t.bold(
+          t.italic("\nCGPrism Advisor > ") +
+            "For constancy and to avoid errors, only manage this model uninstallation with CGPrism so your registry can stay up to date\n",
+        ),
+      );
+
+      await run("ollama", ["pull", installDetails.owner]);
+
+      dbInit();
+
+      const model = await promptOllamaModel(installDetails);
 
       addModel(model);
 
       console.log(
         `${t.green("OK")} Model registered: ${t.italic(t.gradient(model.name))}`,
       );
-    }
 
-    console.log(`\n${t.green("Installation complete.")}`);
-  } catch (error) {
-    console.error(t.red(`Brutal > ${error.message}`));
+      console.log(`\n${t.green("OK")} model installed in Ollama.`);
+
+      console.log(`\n${t.green("Installation complete.")}`);
+    } catch (error) {
+      console.error(t.red(`Brutal > ${error.message}`));
+    }
   }
 }

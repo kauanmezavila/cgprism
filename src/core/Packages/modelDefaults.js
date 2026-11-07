@@ -8,7 +8,8 @@ export async function getModelDefaults(
   modelId,
   filename,
 ) {
-  if (provider !== "hg" || !providerUrl || !modelId) return null;
+  if (provider !== "hg" || provider !== "ms" || !providerUrl || !modelId)
+    return null;
 
   const repoPath = modelId
     .split("/")

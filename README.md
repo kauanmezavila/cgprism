@@ -1,7 +1,7 @@
 <div align="center">
   <h1>CGPrism</h1>
   <p>The local interface for AI management</p>
-  <p><b>v0.0.5: Llama Specialist</b></p>
+  <p><b>v0.0.6: Llama Better Specialist</b></p>
 </div>
 
 ## What it is?
@@ -16,10 +16,10 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 - Uninstall providers/owners/repos/models
 - Registring everything in a SQLite 3 DB
 - TUI docs navigation
+- Run models
 
 ## What it CAN'T do now / What it WILL do in the future.
 
-- Run models
 - Search models
 - More providers
 - API integration to model usage
@@ -32,6 +32,7 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 | ------------ | --- |
 | Hugging Face | hg  |
 | Models Scope | ms  |
+| Ollama       | ol  |
 
 ## Installing it
 

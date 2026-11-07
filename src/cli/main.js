@@ -15,7 +15,11 @@ import {
 } from "../Executers/delete.js";
 import { showDocs } from "../Executers/docs.js";
 import { resolve } from "../core/Packages/resolve.js";
-import { createModelFile, createModelWithOllama } from "../Executers/model.js";
+import {
+  createInternalModelWithOllama,
+  createModelFile,
+  createModelWithOllama,
+} from "../Executers/model.js";
 
 import { dirname } from "node:path";
 
@@ -58,29 +62,59 @@ if (version) {
   console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);
   console.log(t.dim(`Resolved:\n${JSON.stringify(resolvedQuery, null, 2)}\n`));
 
-  if (resolvedQuery.model + resolvedQuery.owner + resolvedQuery.provider) {
-    install(resolvedQuery);
-  } else if (
-    resolvedQuery.model +
-    resolvedQuery.owner +
-    resolvedQuery.provider +
-    resolvedQuery.full +
-    resolvedQuery.ollama
-  ) {
-    install(resolvedQuery);
+  if (resolvedQuery.owner && resolvedQuery.provider === "ol") {
+    await install(resolvedQuery);
 
     const modelQuery = args
       .slice(1)
       .filter((arg) => !arg.startsWith("--"))
       .join(" ");
 
-    await createModelFile(packageRoot, modelQuery);
-
-    const result = await createModelWithOllama(packageRoot, modelQuery);
+    const result = await createInternalModelWithOllama(
+      modelQuery,
+      resolvedQuery.owner,
+    );
 
     if (result) {
-      console.log(`${t.green("OK")} ${result.id} was deployed to Ollama.`);
+      console.log(
+        `${t.green("OK")} ${resolvedQuery.owner} was deployed to Ollama.`,
+      );
     }
+  } else if (
+    resolvedQuery.model &&
+    resolvedQuery.owner &&
+    resolvedQuery.provider &&
+    resolvedQuery.full &&
+    resolvedQuery.ollama
+  ) {
+    await install(resolvedQuery);
+
+    const modelQuery = args
+      .slice(1)
+      .filter((arg) => !arg.startsWith("--"))
+      .join(" ");
+
+    if (resolvedQuery.provider !== "ol") {
+      await createModelFile(packageRoot, modelQuery);
+
+      const result = await createModelWithOllama(packageRoot, modelQuery);
+
+      if (result) {
+        console.log(`${t.green("OK")} ${result.id} was deployed to Ollama.`);
+      }
+    } else {
+      const result = await createInternalModelWithOllama(modelQuery);
+
+      if (result) {
+        console.log(`${t.green("OK")} ${result.id} was deployed to Ollama.`);
+      }
+    }
+  } else if (
+    resolvedQuery.model &&
+    resolvedQuery.owner &&
+    resolvedQuery.provider
+  ) {
+    await install(resolvedQuery);
   } else {
     console.log("Brutal > Missing info on the query");
   }
