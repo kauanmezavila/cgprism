@@ -154,7 +154,10 @@ export default async function install(installDetails) {
     let mainPath;
 
     try {
-      mainPath = resolveModelsPath(installDetails.provider, installDetails.target);
+      mainPath = resolveModelsPath(
+        installDetails.provider,
+        installDetails.target,
+      );
       await mkdir(dirname(mainPath), { recursive: true });
     } catch {
       console.error(t.red("Hm, cant resolve the main path!"));
