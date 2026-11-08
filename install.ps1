@@ -1,7 +1,9 @@
+```powershell
 $ErrorActionPreference = "Stop"
 
 $Repo = "https://github.com/kauanmezavila/cgprism.git"
 $InstallDir = "$env:LOCALAPPDATA\CGPrism"
+$NodeVersion = "22"
 
 function Require-Winget {
     if (-not (Get-Command winget -ErrorAction SilentlyContinue)) {
@@ -38,37 +40,69 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
 }
 
 # Install Git LFS
-if (-not (Get-Command git-lfs -ErrorAction SilentlyContinue)) {
+if (-not (git lfs version 2>$null)) {
     Install-Package "GitHub.GitLFS"
 }
 
-# Install Node.js 22+
-$NodeMajor = 0
+Refresh-Path
 
-if (Get-Command node -ErrorAction SilentlyContinue) {
-    $NodeMajor = [int](node -p "process.versions.node.split('.')[0]")
+# Install NVM for Windows
+if (-not (Get-Command nvm -ErrorAction SilentlyContinue)) {
+    Write-Host "Installing NVM for Windows..."
+
+    winget install nvm-windows `
+        --accept-source-agreements `
+        --accept-package-agreements
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to install NVM for Windows."
+    }
+
+    Refresh-Path
+
+    if (-not (Get-Command nvm -ErrorAction SilentlyContinue)) {
+        Write-Host ""
+        Write-Host "NVM was installed."
+        Write-Host "Restart PowerShell and run this installer again."
+        exit 0
+    }
 }
 
-if ($NodeMajor -lt 22) {
-    Install-Package "OpenJS.NodeJS.LTS"
+# Install and activate Node.js 22 through NVM
+Write-Host "Installing Node.js $NodeVersion through NVM..."
+
+nvm install $NodeVersion
+
+if ($LASTEXITCODE -ne 0) {
+    throw "Failed to install Node.js through NVM."
+}
+
+nvm use $NodeVersion
+
+if ($LASTEXITCODE -ne 0) {
+    throw "Failed to activate Node.js $NodeVersion."
 }
 
 Refresh-Path
 
 # Verify Node.js
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
-    Write-Host "Node.js was installed. Restart PowerShell and run this script again."
-    exit 0
+    throw "Node.js is unavailable. Restart PowerShell and retry."
 }
 
 $NodeMajor = [int](node -p "process.versions.node.split('.')[0]")
 
 if ($NodeMajor -lt 22) {
-    throw "Node.js 22+ is required. Restart PowerShell and retry."
+    throw "Node.js 22+ is required. Current version: $(node -v)"
 }
+
+Write-Host "Node.js version: $(node -v)"
+Write-Host "npm version: $(npm -v)"
 
 # Install pnpm
 if (-not (Get-Command pnpm -ErrorAction SilentlyContinue)) {
+    Write-Host "Installing pnpm..."
+
     npm install -g pnpm
 
     if ($LASTEXITCODE -ne 0) {
@@ -98,6 +132,10 @@ else {
 # Initialize Git LFS
 git lfs install
 
+if ($LASTEXITCODE -ne 0) {
+    throw "Failed to initialize Git LFS."
+}
+
 # Clone or update repository
 if (Test-Path "$InstallDir\.git") {
     Write-Host "Updating CGPrism..."
@@ -105,6 +143,11 @@ if (Test-Path "$InstallDir\.git") {
 }
 else {
     Write-Host "Cloning CGPrism..."
+
+    if (Test-Path $InstallDir) {
+        throw "Install directory exists but is not a Git repository: $InstallDir"
+    }
+
     git clone $Repo $InstallDir
 }
 
@@ -126,6 +169,10 @@ if ($LASTEXITCODE -ne 0) {
 # Configure pnpm global bin
 pnpm setup
 
+if ($LASTEXITCODE -ne 0) {
+    throw "Failed to configure pnpm."
+}
+
 # Install CGPrism globally
 pnpm add -g .
 
@@ -141,5 +188,9 @@ Write-Host ""
 Write-Host "Run CGPrism with:"
 Write-Host "  cgprism"
 Write-Host ""
+Write-Host "Check Node.js with:"
+Write-Host "  node --version"
+Write-Host ""
 Write-Host "Check Ollama with:"
 Write-Host "  ollama --version"
+```

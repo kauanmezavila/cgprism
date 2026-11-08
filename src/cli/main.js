@@ -6,6 +6,7 @@ import path from "node:path";
 import t from "../core/Packages/colors.js";
 import { run } from "../core/Packages/run.js";
 import { help } from "../Executers/help.js";
+import { updateAll } from "../Executers/update.js";
 import { runModelWithOllama } from "../Executers/runModels.js";
 import install from "../Executers/install.js";
 import {
@@ -82,6 +83,9 @@ if (version) {
 } else if (command === "doctor") {
   console.log(banner);
   await doctor(packageRoot);
+} else if (command === "update") {
+  console.log(banner);
+  await updateAll();
 } else if (command === "install") {
   console.log(banner);
   console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);

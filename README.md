@@ -49,11 +49,14 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 
 ### Quick install
 
-#### Linux and MacOS (unix-based)
+#### Linux
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kauanmezavila/cgprism/main/install.sh | bash
 ```
+
+The automated installer supports Linux distributions using apt, dnf, pacman, or zypper.
+On macOS, install the requirements below and use the manual installation steps.
 
 #### Windows
 
@@ -61,15 +64,51 @@ curl -fsSL https://raw.githubusercontent.com/kauanmezavila/cgprism/main/install.
 irm https://raw.githubusercontent.com/kauanmezavila/cgprism/main/install.ps1 | iex
 ```
 
-Requirements:
+### Manual installation
 
-- [Git](https://git-scm.com/install)
-- [Git LFS](https://git-lfs.com/)
-- [Node.js 22 or newer](https://nodejs.org/en/download)
-- [pnpm](https://pnpm.io/installation)
-- [Ollama](https://ollama.com/download)
+Install the system packages for your Linux distribution. These include compiler tools for native Node.js dependencies such as SQLite:
 
-Clone and install CGPrism:
+```bash
+# Debian / Ubuntu
+sudo apt-get update
+sudo apt-get install -y git git-lfs curl ca-certificates build-essential python3
+
+# Fedora (use this block instead on Fedora)
+sudo dnf install -y git git-lfs curl gcc-c++ make python3
+
+# Arch Linux (use this block instead on Arch)
+sudo pacman -S --needed git-lfs curl base-devel python
+
+# openSUSE (use this block instead on openSUSE)
+sudo zypper install -y git git-lfs curl gcc-c++ make python3
+```
+
+On macOS, install [Homebrew](https://brew.sh/) if needed, then install Git and Git LFS and the Xcode command-line tools:
+
+```bash
+brew install git git-lfs
+git lfs install
+xcode-select --install
+```
+
+On macOS, download and install the Ollama app from [ollama.com/download](https://ollama.com/download). On Linux, install Ollama with its official installer:
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+Install Node.js 22 or newer with [nvm](https://github.com/nvm-sh/nvm) on Linux or macOS, then install pnpm:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.41.0/install.sh | bash
+# Open a new terminal, then:
+nvm install 22
+nvm use 22
+npm install -g pnpm
+pnpm setup
+```
+
+If nvm is not available in the current terminal, open a new terminal or load it with source ~/.nvm/nvm.sh. After pnpm setup, open a new terminal so pnpm's global command path is active. Then clone and install CGPrism:
 
 ```bash
 git clone https://github.com/kauanmezavila/cgprism.git
@@ -78,7 +117,7 @@ pnpm install
 pnpm add -g .
 ```
 
-If the command is not found, run `pnpm setup` and restart the shell.
+If the cgprism command is not found, run pnpm setup and restart the shell.
 
 CGPrism stores the registry.db and downloaded repos in .cgprism in the home directory. You can set `CGPRISM_HOME` to set another directory:
 
