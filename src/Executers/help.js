@@ -1,44 +1,46 @@
-const helpText = `
-cgprism <command> [input] [flag]
+import t from "../core/Packages/colors.js";
 
---version                       Show the actual version.
+const helpText = `
+${t.yellow("cgprism")} <${t.blue("command")}> [${t.magenta("input")}] [${t.red("flag")}]
+
+--${t.red("version")}                       Show the actual version.
 
 
 Avaliable commands:
-    <update>                    Update CGPrism and its dependencies.
+    <${t.blue("update")}>                    Update CGPrism and its dependencies.
 
-    <doctor>                    Makes a simple health check.
+    <${t.blue("doctor")}>                    Makes a simple health check.
 
-    <list>                      List the models.
+    <${t.blue("list")}>                      List the models.
 
-    <history>                   Show the commands hsitory.
+    <${t.blue("history")}>                   Show the commands hsitory.
 
-    <install> [input] [flag]    Install models, check the README.md for more input infos.
-    --gls               To install gls pointers.
+    <${t.blue("install")}> [${t.magenta("input")}] [${t.red("flag")}]    Install models, check the README.md for more input infos.
+    --${t.red("gls")}               To install gls pointers.
 
-    <model> [input] [flag]      Manage runtime models, check the README.md for more input infos.
-    --new               Creates a new Modelfile.
-    --create --ollama   Create a new model in Ollama using a previous Modelcard.
+    <${t.blue("model")}> [${t.magenta("input")}] [${t.red("flag")}]      Manage runtime models, check the README.md for more input infos.
+    --${t.red("new")}               Creates a new Modelfile.
+    --${t.red("create")} --ollama")}   Create a new model in Ollama using a previous Modelcard.
 
-    <run> [input] [flag]        Run a logged model (with Modelfile in CGPrism DB), check the README.md for more input infos.
-    --ollama                    Runs a model from Ollama with modelcard logged with CGPrism.
+    <${t.blue("run")}> [${t.magenta("input")}] [${t.red("flag")}]        Run a logged model (with Modelfile in CGPrism DB), check the README.md for more input infos.
+    --${t.red("ollama")}                    Runs a model from Ollama with modelcard logged with CGPrism.
 
-    <uninstall> [input]         Uninstall models, check the README.md for more input infos.
+    <${t.blue("uninstall")}> [${t.magenta("input")}]         Uninstall models, check the README.md for more input infos.
 
-    <hardware>                  Hardware and model compatibility.
-    --about             Hardware info.
-    --actual            Judges if the installed models can run based on an heuristic analyse.
-    --benchmark         Makes an heuristic analyse in the system
+    <${t.blue("hardware")}>                  Hardware and model compatibility.
+    --${t.red("about")}             Hardware info.
+    --${t.red("actual")}            Judges if the installed models can run based on an heuristic analyse.
+    --${t.red("benchmark")}         Makes an heuristic analyse in the system
 
-    <docs> [input] [flag]       Look the .md's in the repos on your terminal, check the README.md for more input infos.
-    --model             By name in db   
-    --provider          By provider
-    --owner             By owner   
-    --family            By family  
-    --architecture      By architecture
-    --format            By format  
-    --runtime           By runtime 
-    --status            By status  
+    <${t.blue("docs")}> [${t.magenta("input")}] [${t.red("flag")}]       Look the .md's in the repos on your terminal, check the README.md for more input infos.
+    --${t.red("model")}             By name in db   
+    --${t.red("provider")}          By provider
+    --${t.red("owner")}             By owner   
+    --${t.red("family")}            By family  
+    --${t.red("architecture")}      By architecture
+    --${t.red("format")}            By format  
+    --${t.red("runtime")}           By runtime 
+    --${t.red("status")}            By status  
 `;
 
 export function help() {
