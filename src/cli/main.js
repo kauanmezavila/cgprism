@@ -5,6 +5,7 @@ import path from "node:path";
 
 import t from "../core/Packages/colors.js";
 import { run } from "../core/Packages/run.js";
+import { help } from "../Executers/help.js";
 import { runModelWithOllama } from "../Executers/runModels.js";
 import install from "../Executers/install.js";
 import {
@@ -179,6 +180,9 @@ if (version) {
   const finalPath = dirname(selectedPath);
 
   await run("mdt", [finalPath], { raw: true });
+} else if (command === "help") {
+  console.log(banner);
+  help();
 } else if (command === "model") {
   console.log(banner);
   console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);
