@@ -9,6 +9,8 @@
 CGPrism is born to resolve all your problems with local AI models managment.
 The tool is being build with JavaScript for main logic and SQLite for registry.
 
+> PS: Some things are a little weird and may not work well
+
 ## What it CAN do now
 
 - [Install](#install-models) model repositories from [3 providers](#providers)
@@ -136,6 +138,14 @@ CGPrism also creates a separate `StorageManager/storage.db` SQLite database unde
 If you are upgrading an older version and want to keep using its existing models and registry, set CGPRISM_HOME to that version src/data. Alternatively, move the Models folder and registry.db into the new .cgprism directory.
 
 ## Commands
+
+### Recomendation
+
+Try every command using this model:
+
+```bash
+cgprism install hg@QuantFactory/SmolLM2-135M-Instruct-GGUF
+```
 
 ### Version
 

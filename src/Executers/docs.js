@@ -71,8 +71,18 @@ export async function showDocs(args = process.argv.slice(2)) {
     .slice(1)
     .find((arg) => arg.startsWith("--"))
     ?.slice(2);
-  const field = docTypes[typeFlag];
+  const field = typeFlag ? docTypes[typeFlag] : "name";
   const term = args.slice(1).find((arg) => !arg.startsWith("-"));
+
+  if (!field) {
+    console.log(`Unknown search field: --${typeFlag}`);
+    return;
+  }
+
+  if (!term) {
+    console.log("Provide a search term. By default, docs searches model names.");
+    return;
+  }
 
   const matches = getModels().filter((model) =>
     String(model[field] ?? "")
@@ -80,7 +90,7 @@ export async function showDocs(args = process.argv.slice(2)) {
       .includes(term.toLowerCase()),
   );
   if (matches.length === 0) {
-    console.log("No items found in the DB.");
+    console.log(`No models matched "${term}" in the ${field} field.`);
     return;
   }
 

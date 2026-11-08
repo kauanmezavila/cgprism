@@ -181,9 +181,10 @@ if (version) {
   console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);
 
   const selectedPath = await showDocs(args);
-  const finalPath = dirname(selectedPath);
-
-  await run("mdt", [finalPath], { raw: true });
+  if (selectedPath) {
+    const finalPath = dirname(selectedPath);
+    await run("mdt", [finalPath], { raw: true });
+  }
 } else if (command === "help") {
   console.log(banner);
   help();
