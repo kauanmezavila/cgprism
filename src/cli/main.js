@@ -80,7 +80,7 @@ if (version) {
   }
 } else if (command === "doctor") {
   console.log(banner);
-  await doctor();
+  await doctor(packageRoot);
 } else if (command === "install") {
   console.log(banner);
   console.log(`\n${t.bold("Running:")} ${t.underline(args.join(" "))}\n`);
