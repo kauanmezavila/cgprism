@@ -82,7 +82,12 @@ as_root() {
 # Install system dependencies
 case "$OS_FAMILY" in
     debian)
-        as_root apt-get update
+        # A broken third-party apt source should not prevent installation when
+        # the needed package indexes are still available. apt-get install below
+        # remains authoritative and will report if a required package is absent.
+        if ! as_root apt-get update; then
+            info "Warning: apt-get update reported repository errors; trying to install with available package indexes."
+        fi
         as_root apt-get install -y \
             git git-lfs curl ca-certificates
         ;;
