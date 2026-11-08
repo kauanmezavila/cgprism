@@ -49,6 +49,26 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 
 ## Installing it
 
+### Binary options
+
+You can check on [Releases](https://github.com/kauanmezavila/cgprism/releases/tag/v1.0.0) some options:
+
+- Linux:
+  - [x64](https://github.com/kauanmezavila/cgprism/releases/download/v1.0.0/cgprism-linux-x64)
+  - [ARM64](https://github.com/kauanmezavila/cgprism/releases/download/v1.0.0/cgprism-linux-arm64)
+
+- Linux Static:
+  - [ARM64](https://github.com/kauanmezavila/cgprism/releases/download/v1.0.0/cgprism-linuxstatic-arm64)
+
+- MacOS
+  - [x64](https://github.com/kauanmezavila/cgprism/releases/download/v1.0.0/cgprism-macos-x64)
+  - [ARM64](https://github.com/kauanmezavila/cgprism/releases/download/v1.0.0/cgprism-macos-arm64)
+
+- Windows:
+  - [x64](https://github.com/kauanmezavila/cgprism/releases/download/v1.0.0/cgprism-win-x64)
+
+> "You got a mail!" If the binary don't work. Click [here](#report-001)
+
 ### Quick install
 
 #### Linux
@@ -57,8 +77,8 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 curl -fsSL https://raw.githubusercontent.com/kauanmezavila/cgprism/main/install.sh | bash
 ```
 
-The automated installer supports Linux distributions using apt, dnf, pacman, or zypper.
-On macOS, install the requirements below and use the manual installation steps.
+The automated installer uses apt, dnf, pacman, or zypper.
+On macOS, install the requirements below and follow the [manual installation steps](#manual-installation).
 
 #### Windows
 
@@ -133,7 +153,7 @@ $env:CGPRISM_HOME = 'D:\CGPrismData'
 
 I recommend keeping this directory when updating or reinstalling CGPrism.
 
-CGPrism also creates a separate `StorageManager/storage.db` SQLite database under this data directory for command history. It is independent of `registry.db`. Commands are recorded automatically, and `cgprism history` displays the most recent 100 entries.
+CGPrism also creates a separate StorageManager/storage.db SQLite database under this data directory for command history. It is independent of registry.db. Commands are recorded automatically, and cgprism history displays the most recent 100 entries.
 
 If you are upgrading an older version and want to keep using its existing models and registry, set CGPRISM_HOME to that version src/data. Alternatively, move the Models folder and registry.db into the new .cgprism directory.
 
@@ -357,3 +377,19 @@ cgprism docs Qwen --architecture
 | `--format`       | format       |
 | `--runtime`      | runtime      |
 | `--status`       | status       |
+
+## Mails
+
+### Report-001
+
+From: @yao-pkg/pkg
+To: You
+
+**Warning Unable to sign the macOS executable**
+Due to the mandatory code signing requirement, before the
+executable is distributed to end users, it must be signed.
+Otherwise, it will be immediately killed by kernel on launch.
+An ad-hoc signature is sufficient.
+To do that, run pkg on a Mac, or transfer the executable to a Mac
+and run "codesign --sign - <executable>", or (if you use Linux)
+install "ldid" utility to PATH and then run pkg again
