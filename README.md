@@ -1,7 +1,7 @@
 <div align="center">
   <h1>CGPrism</h1>
   <p>The local interface for AI management</p>
-  <p><b>v0.0.8: The local AI enthusiast</b></p>
+  <p><b>v1.0.0: The local AI enthusiast</b></p>
 </div>
 
 ## What it is?

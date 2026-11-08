@@ -75,7 +75,7 @@ const version = args.includes("--version");
 const resolvedQuery = resolve(args.join(" "));
 
 if (version) {
-  console.log(t.italic(t.gradient(`CGPrism`) + " 0.0.8"));
+  console.log(t.italic(t.gradient(`CGPrism`) + " 1.0.0"));
 } else if (command === "history") {
   for (const entry of getCommandHistory()) {
     console.log(`#${entry.id} [${entry.executed_at}] ${entry.command}`);
