@@ -11,9 +11,12 @@ async function checkDependencies() {
 
   const dependenciesCmds = {
     node: ["node", ["--version"]],
+    nvm: ["nvm", ["--version"]],
     git: ["git", ["--version"]],
     "git-lfs": ["git", ["lfs", "version"]],
+    npm: ["npm", ["--version"]],
     pnpm: ["pnpm", ["--version"]],
+    ollama: ["ollama", ["--version"]],
   };
 
   for (const [dependency, [executable, args]] of Object.entries(

@@ -149,6 +149,12 @@ cgprism --version
 cgprism doctor
 ```
 
+### Update
+
+```bash
+cgprism update
+```
+
 ### List models
 
 ```bash

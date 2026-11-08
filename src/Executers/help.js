@@ -5,6 +5,8 @@ cgprism <command> [input] [flag]
 
 
 Avaliable commands:
+    <update>                    Update CGPrism and its dependencies.
+
     <doctor>                    Makes a simple health check.
 
     <list>                      List the models.
