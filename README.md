@@ -31,14 +31,6 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 - [Navigate documentation](#see-repo-documentation) through the terminal
 - [Commands history](#commands-history)
 
-## What it CAN'T do now / What it WILL do in the future.
-
-- Search models
-- More providers
-- API integration to model usage
-- Route for multiple models
-- Easily agents creation
-
 ## Providers
 
 | Provider     | ID  |
@@ -48,6 +40,8 @@ The tool is being build with JavaScript for main logic and SQLite for registry.
 | Ollama       | ol  |
 
 ## Installing it
+
+> PS: If you suspect one of these "automated" install will/are not working, try [manual install](#manual-installation)
 
 ### Binary options
 
@@ -61,8 +55,8 @@ You can check on [Releases](https://github.com/kauanmezavila/cgprism/releases/ta
   - [ARM64](https://github.com/kauanmezavila/cgprism/releases/download/v1.0.0/cgprism-linuxstatic-arm64)
 
 - MacOS
-  - [x64](https://github.com/kauanmezavila/cgprism/releases/download/v1.0.0/cgprism-macos-x64)
-  - [ARM64](https://github.com/kauanmezavila/cgprism/releases/download/v1.0.0/cgprism-macos-arm64)
+  - [x64](https://github.com/kauanmezavila/cgprism/releases/download/v1.0.0/cgprism-macos-x64) [Unsigned]
+  - [ARM64](https://github.com/kauanmezavila/cgprism/releases/download/v1.0.0/cgprism-macos-arm64) [Unsigned]
 
 - Windows:
   - [x64](https://github.com/kauanmezavila/cgprism/releases/download/v1.0.0/cgprism-win-x64)
@@ -88,24 +82,24 @@ irm https://raw.githubusercontent.com/kauanmezavila/cgprism/main/install.ps1 | i
 
 ### Manual installation
 
-Install the system packages for your Linux distribution. These include compiler tools for native Node.js dependencies such as SQLite:
+Install the dependecies for your Linux distro:
 
 ```bash
 # Debian / Ubuntu
 sudo apt-get update
 sudo apt-get install -y git git-lfs curl ca-certificates build-essential python3
 
-# Fedora (use this block instead on Fedora)
+# Fedora (use this on Fedora)
 sudo dnf install -y git git-lfs curl gcc-c++ make python3
 
-# Arch Linux (use this block instead on Arch)
+# Arch Linux (use this on Arch)
 sudo pacman -S --needed git-lfs curl base-devel python
 
-# openSUSE (use this block instead on openSUSE)
+# openSUSE (use this on openSUSE)
 sudo zypper install -y git git-lfs curl gcc-c++ make python3
 ```
 
-On macOS, install [Homebrew](https://brew.sh/) if needed, then install Git and Git LFS and the Xcode command-line tools:
+On macOS, install [Homebrew](https://brew.sh/) if needed, then install Git, Git LFS and the Xcode command-line tools:
 
 ```bash
 brew install git git-lfs
@@ -113,7 +107,7 @@ git lfs install
 xcode-select --install
 ```
 
-On macOS, download and install the Ollama app from [ollama.com/download](https://ollama.com/download). On Linux, install Ollama with its official installer:
+On macOS, download and install [Ollama](https://ollama.com/download). On Linux, install Ollama with its official installer:
 
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
@@ -130,7 +124,7 @@ npm install -g pnpm
 pnpm setup
 ```
 
-If nvm is not available in the current terminal, open a new terminal or load it with source ~/.nvm/nvm.sh. After pnpm setup, open a new terminal so pnpm's global command path is active. Then clone and install CGPrism:
+If nvm is not available in the current terminal, open a new terminal or load it with `source ~/.nvm/nvm.sh`. After `pnpm setup`, open a new terminal so pnpm's global command path is active. Then clone and install CGPrism:
 
 ```bash
 git clone https://github.com/kauanmezavila/cgprism.git
@@ -139,9 +133,9 @@ pnpm install
 pnpm add -g .
 ```
 
-If the cgprism command is not found, run pnpm setup and restart the shell.
+If the cgprism command is not found, run `pnpm setup` and restart the shell.
 
-CGPrism stores the registry.db and downloaded repos in .cgprism in the home directory. You can set `CGPRISM_HOME` to set another directory:
+CGPrism stores the registry.db and downloaded repos in `~/.cgprism`. You can set `CGPRISM_HOME` to set another directory:
 
 ```bash
 export CGPRISM_HOME=/mnt/data/cgprism
@@ -153,21 +147,25 @@ $env:CGPRISM_HOME = 'D:\CGPrismData'
 
 I recommend keeping this directory when updating or reinstalling CGPrism.
 
-CGPrism also creates a separate StorageManager/storage.db SQLite database under this data directory for command history. It is independent of registry.db. Commands are recorded automatically, and cgprism history displays the most recent 100 entries.
-
-If you are upgrading an older version and want to keep using its existing models and registry, set CGPRISM_HOME to that version src/data. Alternatively, move the Models folder and registry.db into the new .cgprism directory.
+CGPrism also creates a separate StorageManager/storage.db SQLite database under this data directory for command history. It only records the last 100 commands runned with CGPrism.
 
 ## Commands
 
 ### Recomendation
 
-Try every command using this model:
+Try every command using this light-weight model:
 
 ```bash
 cgprism install hg@QuantFactory/SmolLM2-135M-Instruct-GGUF
 ```
 
+It's incredible light and can run on CPU
+
+> "You got a mail!" If you want a copy-paste test prompt. Click [here](#report-002)
+
 ### Version
+
+To see the actual version
 
 ```bash
 cgprism --version
@@ -175,11 +173,15 @@ cgprism --version
 
 ### Doctor
 
+To makes health checks on the infrastructure
+
 ```bash
 cgprism doctor
 ```
 
 ### Update
+
+To update the system, the depencies and the models on your pc
 
 ```bash
 cgprism update
@@ -187,17 +189,25 @@ cgprism update
 
 ### List models
 
+To list the models with some infos
+
 ```bash
 cgprism list
 ```
 
 ### Commands history
 
+The last 100 runned with CGPrism
+
 ```bash
 cgprism history
 ```
 
 ### Install models
+
+To install models
+
+> **HINT: while installing you will need to prompt some infos about the model or press enter and select the defaults; in this version, changing the model name may result in not being able to create modelcards for some reason that i am still looking for**
 
 ```bash
 cgprism install [PROVIDER_ID]@[MODEL_OWNER]/[MODEL_REPO_NAME] [FLAGS]
@@ -216,18 +226,20 @@ cgprism install ms@MiniMax/MiniMax-M3.1-Flash.git --gls
 
 #### Flags
 
-| Flag                  | Function                                                                                 |
-| --------------------- | ---------------------------------------------------------------------------------------- |
-| --gls                 | Detect and install GLS pointers in the repo                                              |
-| --gls --full --ollama | Will install and deploy ONE model with ollama (repos with multiple models may fail here) |
+| Flag                  | Function                                                                                                       |
+| --------------------- | -------------------------------------------------------------------------------------------------------------- |
+| --gls                 | Detect and install GLS pointers in the repo                                                                    |
+| --gls --full --ollama | Will install and deploy ONE model with ollama (nightly function, still under development but probaly can work) |
 
 ### Uninstall models
 
+To uninstall models
+
 ```bash
-cgprism uninstall [PROVIDER_ID]@[MODEL_OWNER]/[MODEL_REPO_NAME] [FLAGS]
+cgprism uninstall [PROVIDER_ID]@[MODEL_OWNER]/[MODEL_REPO_NAME]
 ```
 
-- PROVIDER_ID: Use a provider ID of [providers](#providers)
+- \*PROVIDER_ID: Use a provider ID of [providers](#providers)
 - MODEL_OWNER: The owner of the repo
 - MODEL_REPO_NAME: The model name repo
 
@@ -253,6 +265,8 @@ cgprism uninstall ms
 
 ### Hardware and model compatibility
 
+A special tool to make some analyzes on your hardware for AI compatibility
+
 ```bash
 cgprism hardware [FLAGS]
 ```
@@ -269,15 +283,17 @@ cgprism hardware [FLAGS]
 
 ### Manage runtime models
 
+To interact model-runtime relations, for now it can create modelcards and set models in ollama
+
 ```bash
 cgprism model [[PROVIDER_ID]@[MODEL_OWNER]/[MODEL_REPO_NAME] or [MODEL_NAME]] [FLAGS]
 ```
 
-- PROVIDER_ID: Use a provider ID of [providers](#providers)
+- \*PROVIDER_ID: Use a provider ID of [providers](#providers)
 - MODEL_OWNER: The owner of the repo
 - MODEL_REPO_NAME: The model name repo
 - MODEL_NAME: The name of the model
-- FLAGS: [Flags](#flags-2) to diferent options
+- \*FLAGS: [Flags](#flags-2) to select what to make
 
 #### Example
 
@@ -302,11 +318,13 @@ cgprism model hg@ --create --ollama
 
 ### Run models
 
+To run models in the inferences.
+
 ```bash
 cgprism run [[PROVIDER_ID]@[MODEL_OWNER]/[MODEL_REPO_NAME] or [MODEL_NAME]] [FLAGS]
 ```
 
-- PROVIDER_ID: Use a provider ID of [providers](#providers)
+- \*PROVIDER_ID: Use a provider ID of [providers](#providers)
 - MODEL_OWNER: The owner of the repo
 - MODEL_REPO_NAME: The model name repo
 - MODEL_NAME: The name of the model
@@ -336,30 +354,30 @@ Look the .md's in the repo on your terminal
 cgprism docs [SEARCH_TERM] [FLAGS]
 ```
 
-- `SEARCH_TERM`: A term used to search into the storage references.
-- `FLAGS`: [Flags](#flags-4) to optmize your searching
+- \*`SEARCH_TERM`: A term used to search into the storage references.
+- \*`FLAGS`: [Flags](#flags-4) to select the term in your searching
 
 #### Examples
 
-Search by name in .db:
+Search by name in db:
 
 ```bash
 cgprism docs nemotrom --model
 ```
 
-Search by provider:
+Search by provider in db:
 
 ```bash
 cgprism docs hg --provider
 ```
 
-Search by owner:
+Search by owner in db:
 
 ```bash
 cgprism docs nvidia --owner
 ```
 
-Search by architecture:
+Search by architecture in db:
 
 ```bash
 cgprism docs Qwen --architecture
@@ -367,22 +385,27 @@ cgprism docs Qwen --architecture
 
 #### Flags
 
-| Flag             | Function     |
-| ---------------- | ------------ |
-| `--model`        | name in db   |
-| `--provider`     | provider     |
-| `--owner`        | owner        |
-| `--family`       | family       |
-| `--architecture` | architecture |
-| `--format`       | format       |
-| `--runtime`      | runtime      |
-| `--status`       | status       |
+| Flag             | Function                     |
+| ---------------- | ---------------------------- |
+| `--model`        | Search by name in db         |
+| `--provider`     | Search by provider in db     |
+| `--owner`        | Search by owner in db        |
+| `--family`       | Search by family in db       |
+| `--architecture` | Search by architecture in db |
+| `--format`       | Search by format in db       |
+| `--runtime`      | Search by runtime in db      |
+| `--status`       | Search by status in db       |
 
 ## Mails
 
 ### Report-001
 
+For some reason i was unable to sign the macOS executable, so if didn't, i highly recommend use [manual installation](#manual-installation)
+
+---
+
 From: @yao-pkg/pkg
+
 To: You
 
 **Warning Unable to sign the macOS executable**
@@ -393,3 +416,46 @@ An ad-hoc signature is sufficient.
 To do that, run pkg on a Mac, or transfer the executable to a Mac
 and run "codesign --sign - <executable>", or (if you use Linux)
 install "ldid" utility to PATH and then run pkg again
+
+---
+
+### Report-002
+
+Want a copy-paste test prompt to test CGPrism?
+
+```bash
+# Check the version
+cgprism --version
+
+# Check if everything okay
+cgprism doctor
+
+# Install a ultralight model
+cgprism install hg@QuantFactory/SmolLM2-135M-Instruct-GGUF
+
+# Select one of the models, check it docs
+cgprism docs hg --provider
+
+# See if your pc can handle it (probably can)
+cgprism hardware --about
+cgprism hardware --benchmark
+cgprism hardware --actual
+
+# Check again if everything is okay
+cgprism doctor
+
+# Create the model card on Ollama
+cgprism model hg@ --new
+cgprism model hg@ --create --ollama
+
+# Run it, make some questions to the model
+cgprism run hg@ --ollama
+
+# Finished? Run this to uninstall the model, delete the registry, and delete the model in Ollama
+cgprism uninstall hg
+
+# See your command history
+cgprism history
+```
+
+---
